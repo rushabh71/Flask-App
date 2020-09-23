@@ -84,10 +84,23 @@
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
 		  <div class="col-md-8">
 			<div class="card wheat" id="wheat">
-			  <h5 class="card-title">Card title</h5>
   			 <script type="text/javascript">
-  			 	var data = {{graphJSON[0] | safe}};
-  			 	var layout = {{graphJSON[1] | safe}};
+  			 	 var object = '{{graphJSON}}';
+			     var data = [{
+			        type: 'choropleth',
+			        locationmode: object[1],
+			        locations: object[0],
+			        z: object[2],
+			        text: object[3],
+			        colorscale: object[4],
+			        reversescale: false
+			    }];
+
+			    var layout = {
+			      title: 'World Corona Heatmap',
+			      width: 500,
+			      height: 500
+			    };
 
 			    Plotly.newPlot("wheat", data, layout, {showLink: false});
 		     </script>
