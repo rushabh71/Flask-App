@@ -1,0 +1,77 @@
+body {
+	
+}
+
+.container-fluid {
+  margin: 0;
+  padding: 0;
+}
+
+.col {
+  text-align : center;
+  padding:5px;
+}
+
+.row {
+  padding:0;
+  margin:0;
+}
+
+.cheader {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.numbers {
+  font-size: 16px;
+}
+
+.daily {
+  font-size: 14px;
+}
+
+.card {
+  padding: 10px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.parent {
+  padding:10px;
+}
+
+
+.wtable {
+  height: 300px;
+}
+
+.ntable {
+  height: 300px;
+}
+
+.npie {
+  height : 300px;
+}
+
+.stable {
+  height: 500px;
+}
+
+.nheat {
+  height: 400px;
+}
+
+.cchart {
+  height:300px;
+}
+
+.schart {
+  height:300px;
+}
+
+footer p {
+  background-color: gray;
+  padding: 15px;
+  text-align:center;
+  color: white;
+}
