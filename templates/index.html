@@ -27,7 +27,7 @@
       </button>
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link" href="#">About</a>
           </li>
@@ -40,41 +40,45 @@
     
     <div class="container-fluid parent">
 	  
+	  <div class="alert alert-primary update" role="alert">
+		  Last Updated : 23/09/2020
+	  </div>
+
 	  <div class="container-fluid">
 		<div class="row row-cols-2 row-cols-sm-2 row-cols-md-5 row-cols-lg-5">
 		  <div class="col">
 			<div class="alert alert-danger" role="alert">
 			  <span class="cheader">Confirmed</span><br>
-			  <span class="numbers">12345678</span><br>
-			  <span class="daily">+12345678</span>
+			  <span class="numbers" id="cum_confirmed">+12345678</span><br>
+			  <span class="daily"  id="daily_confirmed">+12345678</span>
 			</div>
 		  </div>
 		  <div class="col">
 			<div class="alert alert-success" role="alert">
 			  <span class="cheader">Recovered</span><br>
-			  <span class="numbers">12345678</span><br>
-			  <span class="daily">+12345678</span>
+			  <span class="numbers" id="cum_recovered">12345678</span><br>
+			  <span class="daily" id="daily_recovered">+12345678</span>
 			</div>
 		  </div>
 		  <div class="col">
 			<div class="alert alert-secondary" role="alert">
 			  <span class="cheader">Deceased</span><br>
-			  <span class="numbers">12345678</span><br>
-			  <span class="daily">+12345678</span>
+			  <span class="numbers" id="cum_deceased">12345678</span><br>
+			  <span class="daily"  id="daily_deceased">+12345678</span>
 			</div>
 		  </div>
 		  <div class="col">
 			<div class="alert alert-warning" role="alert">
 			  <span class="cheader">Active</span><br>
-			  <span class="numbers">12345678</span><br>
-			  <span class="daily">+12345678</span>
+			  <span class="numbers" id="cum_active">12345678</span><br>
+			  <span class="daily" id="daily_active">+12345678</span>
 			</div>
 		  </div>
 		  <div class="col">
 			<div class="alert alert-info" role="alert">
 			  <span class="cheader">Tested</span><br>
-			  <span class="numbers">12345678</span><br>
-			  <span class="daily">+12345678</span>
+			  <span class="numbers" id="cum_tested">12345678</span><br>
+			  <span class="daily" id="daily_tested">+12345678</span>
 			</div>
 		  </div>
 		</div>
@@ -82,36 +86,39 @@
 	  
 	  <div class="container-fluid">
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-md-8">
-			<div class="card wheat" id="wheat">
-  			 <script type="text/javascript">
-  			 	 var object = '{{graphJSON}}';
-			     var data = [{
-			        type: 'choropleth',
-			        locationmode: object[1],
-			        locations: object[0],
-			        z: object[2],
-			        text: object[3],
-			        colorscale: object[4],
-			        reversescale: false
-			    }];
-
-			    var layout = {
-			      title: 'World Corona Heatmap',
-			      width: 500,
-			      height: 500
-			    };
-
-			    Plotly.newPlot("wheat", data, layout, {showLink: false});
-		     </script>
- 
-			 
-			</div>
-		  </div>
-		  <div class="col-md-4">
+		  <div class="col-lg-7 col-md-6">
+			<div class="card wheat" id="world_heat"></div>
+		  	</div>
+		  <div class="col-lg-5 col-md-6">
 			<div class="card wtable">
-			  <h5 class="card-title">Card title</h5>
-			  World numbers table
+			  <div class="table-responsive-md">
+				   <table class="table">
+					  <thead>
+					    <tr>
+
+					    	{% for col in world_cols %}
+					       		 <th scope="col">{{col}}</th>
+					        {% endfor %}
+					     
+					    </tr>
+					  </thead>
+
+					  <tbody>
+
+					  	    {% for row in world_rows %}
+					    <tr>
+					        {% for val in row %}
+					        <td>
+					           {{val}}
+					        </td>
+					        {% endfor %}
+					    </tr>
+					    	{% endfor %}
+
+					  </tbody>
+
+					</table>
+				</div>
 			</div>
 		  </div>
 		</div>
@@ -119,16 +126,43 @@
 	  
 	  <div class="container-fluid">
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-md-8">
+		  <div class="col-md-8 col-lg-8">
 			<div class="card ntable">
-			  <h5 class="card-title">Card title</h5>
-			  Nation table
+			   
+			    <div class="table-responsive-md">
+				   <table class="table">
+					  <thead>
+					    <tr>
+
+					    	{% for col in nation_cols %}
+					       		 <th scope="col">{{col}}</th>
+					        {% endfor %}
+					     
+					    </tr>
+					  </thead>
+
+					  <tbody>
+
+					  	    {% for row in nation_rows %}
+					    <tr>
+					        {% for val in row %}
+					        <td>
+					           {{val}}
+					        </td>
+					        {% endfor %}
+					    </tr>
+					    	{% endfor %}
+
+					  </tbody>
+
+					</table>
+				</div>
+
 			</div>
 		  </div>
-		  <div class="col-md-4">
+		  <div class="col-md-4 col-lg-4">
 			<div class="card npie">
-			  <h5 class="card-title">Card title</h5>
-			  Nation pie chart
+			  <div id="nation_pie"></div>
 			</div>
 		  </div>
 		</div>
@@ -176,5 +210,14 @@
   </footer>
   
 </body>
+
+ <script type="text/javascript">
+
+		var numbers ={{ numbers | safe }}
+		var world_heat = {{ world_heat | safe }}
+		var npie_labels = {{ npie_labels | safe }}
+		var npie_cases = {{ npie_cases | safe }}
+
+</script>
 
 </html>
