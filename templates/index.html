@@ -21,7 +21,7 @@
 <body>
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">India Corona Cases</a>
+      <a class="navbar-brand" href="#">India Corona Cases&nbsp&nbsp<img src='https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/383px-Flag_of_India.svg.png' width="34", height="20"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -41,7 +41,7 @@
     <div class="container-fluid parent">
 	  
 	  <div class="alert alert-primary update" role="alert">
-		  Last Updated : 23/09/2020
+		  Last Updated : {{ end_date }}
 	  </div>
 
 	  <div class="container-fluid">
@@ -87,13 +87,26 @@
 	  <div class="container-fluid">
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
 		  <div class="col-lg-7 col-md-6">
-			<div class="card wheat" id="world_heat"></div>
-		  	</div>
+		  	<select class="form-control" id="wselect">
+				  <option>Confirmed</option>
+				  <option>Recovered</option>
+				  <option>Deceased</option>
+				  <option>Active</option>
+			</select>
+			<div class="card wheat" id="world_heat">
+			</div>
+		  </div>
 		  <div class="col-lg-5 col-md-6">
-			<div class="card wtable">
+
+			<form class="form-inline my-2 my-lg-0" id="wtable-search">
+		      <input class="form-control mr-sm-2" type="search" placeholder="Search : United States" aria-label="Search">
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		    </form> 
+
+			<div class="wtable">
 			  <div class="table-responsive-md">
-				   <table class="table">
-					  <thead>
+				   <table class="table table-bordered">
+					  <thead class="thead-dark">
 					    <tr>
 
 					    	{% for col in world_cols %}
@@ -118,20 +131,41 @@
 					  </tbody>
 
 					</table>
+
 				</div>
 			</div>
+
+			<nav aria-label="Page navigation example">
+			  <ul class="pagination">
+			    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+			    <li class="page-item"><a class="page-link" href="#">1</a></li>
+			    <li class="page-item"><a class="page-link" href="#">2</a></li>
+			    <li class="page-item"><a class="page-link" href="#">3</a></li>
+			    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+			  </ul>
+			</nav>
+
 		  </div>
 		</div>
 	  </div>
 	  
 	  <div class="container-fluid">
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
+		  <div class="col-md-4 col-lg-4">
+
+		  	<div class="card npie">
+			  <div id="nation_pie"></div>
+			</div>
+			
+		  </div>
+
 		  <div class="col-md-8 col-lg-8">
-			<div class="card ntable">
+
+			<div class="ntable">
 			   
 			    <div class="table-responsive-md">
-				   <table class="table">
-					  <thead>
+				   <table class="table table-bordered">
+					  <thead class="thead-dark">
 					    <tr>
 
 					    	{% for col in nation_cols %}
@@ -159,11 +193,17 @@
 				</div>
 
 			</div>
-		  </div>
-		  <div class="col-md-4 col-lg-4">
-			<div class="card npie">
-			  <div id="nation_pie"></div>
-			</div>
+
+			<nav aria-label="Page navigation example">
+			  <ul class="pagination">
+			    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+			    <li class="page-item"><a class="page-link" href="#">1</a></li>
+			    <li class="page-item"><a class="page-link" href="#">2</a></li>
+			    <li class="page-item"><a class="page-link" href="#">3</a></li>
+			    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+			  </ul>
+			</nav>
+
 		  </div>
 		</div>
 	  </div>
