@@ -18,7 +18,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import requests
 from bs4 import BeautifulSoup
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from flask import Markup
 from flask import session
 
@@ -57,7 +57,10 @@ def world_heatmap():
 
 	object = {
 		'countries' : world_df['Country_Region'],
-		'confirmed' : world_df['Confirmed']
+		'Confirmed' : world_df['Confirmed'],
+		'Deceased': world_df['Deaths'],
+		'Recovered': world_df['Recovered'],
+		'Active': world_df['Active']
 	}
 
 	graphJSON = json.dumps(object, cls=plotly.utils.PlotlyJSONEncoder)
