@@ -58,6 +58,7 @@ body {
 
 .npie {
   height : 425px;
+  overflow: auto;
 }
 
 .stable {

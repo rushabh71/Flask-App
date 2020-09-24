@@ -19,28 +19,8 @@
 
 		//World heat map
 
-		var data = [{
-	        type: 'choropleth',
-	        locationmode: 'country names',
-	        locations: world_heat['countries'],
-	        z: world_heat['confirmed'],
-	        text: world_heat['countries'],
-	        autocolorscale: true,
-	        colorbar: {len: 0.5},
-	    }];
-
-	    var layout = {
-	      title: {
-				    text:'World COVID-19 Confirmed Cases',
-				    x: 0.05,
-				    y: 0.92
-				  },
-	      width: 825,
-	      height: 650,
-	      margin: {l:0, r:0, b:0, t:0, pad: 0}
-	    };
-
-	    Plotly.newPlot("world_heat", data, layout, {showLink: false});
+		showWorldHeat();
+		
 
 
 	    //Nation pie chart
@@ -60,6 +40,57 @@
 		Plotly.newPlot('nation_pie', data, layout);
 
 
+		$(function() {
+		 $('#wselect').on('change', function() {
+		 	var categ = $(this).val();
+			console.log(categ);
+			showWorldHeat(categ);
+		  });
+		});
+
 
    }
  }
+
+ function showWorldHeat(categ = 'Confirmed'){
+
+
+ 	var data = [{
+	        type: 'choropleth',
+	        locationmode: 'country names',
+	        locations: world_heat['countries'],
+	        z: world_heat[categ],
+	        text: world_heat['countries'],
+	        autocolorscale: true,
+	        colorbar: {len: 0.5},
+	    }];
+
+	    var layout = {
+	      title: {
+				    text:'World COVID-19 '+ categ + ' Cases',
+				    x: 0.02,
+				    y: 0.92
+				  },
+	      width: 825,
+	      height: 650,
+	      margin: {l:0, r:0, b:0, t:0, pad: 0}
+	    };
+
+	    Plotly.newPlot("world_heat", data, layout, {showLink: false});
+ }
+
+
+
+/*
+ $(function() {
+	 $('#wselect').on('change', function() {
+	 	var categ = $(this).val();
+		console.log(categ);
+		$.post("/change_wheat", {"categ": categ},
+			function(response){
+				alert(response.categ);
+			});
+	  });
+	});
+
+*/
