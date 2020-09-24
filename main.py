@@ -24,6 +24,8 @@ from flask import session
 
 world_df = None
 df_nation = None
+df_state = None
+state_names = None
 
 daily_confirmed = []
 daily_recovered = []
@@ -185,9 +187,109 @@ def get_numbers():
 	return graphJSON
 
 
+def getStateName(code):
+	state = {'CT': 'Chhattisgarh',
+             'TG' : 'Telangana',
+             'TN' : 'Tamil Nadu',
+             'LA' : 'Ladakh',
+             'DN' : 'Dadra and Nagar Haveli',
+             'UT' : 'Uttarakhand',
+             'TT' : 'Total' }
+	return state.get(code, None)
+
+
+def prepare_state_data():
+
+	global df_state
+	global state_names
+
+	try:
+		fh = open('data.json', 'r')
+		if (len(fh.read()) > 0):
+			state_names = json.loads(fh.read())
+	except:
+		URL = 'https://api.covid19india.org/v4/data.json'
+		URL_STATE_ABR = 'https://slusi.dacnet.nic.in/watershedatlas/list_of_state_abbreviation.htm'
+
+		with urllib.request.urlopen(URL) as url:
+			data = json.loads(url.read().decode())
+
+		code_page = requests.get(URL_STATE_ABR)
+		soup = BeautifulSoup(code_page.content, 'html.parser')
+
+		keys = []
+		values = []
+		raw_list = []
+
+		page_code = soup.find_all('span')
+
+		for i in page_code:
+			raw_list.append(re.findall('.*HI.>([A-Z].*)<o:p></o:p>.*', i.decode()))
+
+		headers = ['Sl. No.', 'State/ UT', 'Abbreviation']
+
+		for d in raw_list:
+			if (len(d) > 0 and d[0] not in headers):
+				if (len(d[0]) > 2):
+					values.append(d[0])
+				else:
+					keys.append(d[0])
+
+		state_names = dict(list(zip(keys, values)))
+
+		with open('data.json', 'w') as fp:
+			json.dump(state_names, fp)
+
+
+	states = []
+	for state in data.keys():
+		states.append(state)
+
+	total = []
+	for state in states:
+		try:
+			cases = data[state]['total']
+		except:
+			cases = None
+		total.append(cases)
+
+	confirmed = []
+	deceased = []
+	recovered = []
+	tested = []
+
+	for cases in total:
+		confirmed.append(cases.get('confirmed', -1))
+		deceased.append(cases.get('deceased', -1))
+		recovered.append(cases.get('recovered', -1))
+		tested.append(cases.get('tested', -1))
+
+	df_state = pd.DataFrame()
+	df_state['Code'] = states
+	df_state['State'] = [state_names.get(i, getStateName(i)) for i in states]
+	df_state['Confirmed'] = confirmed
+	df_state['Deceased'] = deceased
+	df_state['Recovered'] = recovered
+	df_state['Active'] = df_state['Confirmed'] - df_state['Recovered'] - df_state['Deceased']
+	df_state['Tested'] = tested
+
+	df_state = df_state.sort_values(by=['Confirmed'], ascending=False)
+	df_state = df_state.reset_index(drop=True)
+	df_state = df_state[1:]
+
+	object = {
+		'State' : df_state['State'],
+		'Confirmed' : df_state['Confirmed']
+	}
+
+	return json.dumps(object, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+
 @app.route('/')
 def index():
 	global df_nation
+	global df_state
 
 	world_heat = world_heatmap()
 	numbers = get_numbers()
@@ -195,14 +297,16 @@ def index():
 	dates.reverse()
 	df_nation = df_nation[dates]
 
+	nation_heat = prepare_state_data()
+
 	npie_labels = ['Confirmed', 'Deceased', 'Recovered', 'Active']
 	npie_cases = [df_nation.loc['Total Confirmed', dates[-1]], df_nation.loc['Total Deceased', dates[-1]],
 			 df_nation.loc['Total Recovered', dates[-1]], df_nation.loc['Total Active', dates[-1]]]
 
 	return render_template('index.html', world_heat=world_heat, numbers = numbers, world_cols = world_df.columns.values, world_rows = world_df.values.tolist(),
 						   nation_cols = df_nation.reset_index().columns.values, nation_rows = df_nation.reset_index().values.tolist(), npie_labels = npie_labels,
-						   npie_cases = npie_cases, end_date = end_date
-						   )
+						   npie_cases = npie_cases, end_date = end_date, df_state = nation_heat, state_cols = df_state.columns.values,
+						   state_rows = df_state.values.tolist() )
 
 
 if (__name__ == '__main__'):
