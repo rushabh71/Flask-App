@@ -20,6 +20,7 @@ import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template
 from flask import Markup
+from flask import session
 
 world_df = None
 df_nation = None
@@ -37,6 +38,7 @@ total_active = []
 total_tested = []
 
 dates = []
+end_date = None
 
 app = Flask(__name__)
 
@@ -89,6 +91,7 @@ def get_numbers():
 	global df_nation
 
 	global dates
+	global end_date
 
 	global daily_confirmed
 	global daily_recovered
@@ -105,6 +108,8 @@ def get_numbers():
 	URL = 'https://api.covid19india.org/data.json'
 	POP = 1352600000 / 1000000
 
+	dates = []
+
 	with urllib.request.urlopen(URL) as url:
 		data = json.loads(url.read().decode())
 
@@ -116,6 +121,8 @@ def get_numbers():
 			date = datetime.strptime('29 February 2020 ', '%d %B %Y ')
 		date = date.strftime('%d/%m/2020')
 		dates.append(date)
+
+	end_date = dates[-1]
 
 	daily_confirmed = [int(i.get('dailyconfirmed', None)) for i in data.get('cases_time_series', None)]
 	daily_deceased = [int(i.get('dailydeceased', None)) for i in data.get('cases_time_series', None)]
@@ -191,7 +198,7 @@ def index():
 
 	return render_template('index.html', world_heat=world_heat, numbers = numbers, world_cols = world_df.columns.values, world_rows = world_df.values.tolist(),
 						   nation_cols = df_nation.reset_index().columns.values, nation_rows = df_nation.reset_index().values.tolist(), npie_labels = npie_labels,
-						   npie_cases = npie_cases
+						   npie_cases = npie_cases, end_date = end_date
 						   )
 
 
