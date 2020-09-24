@@ -110,7 +110,11 @@
 					    <tr>
 
 					    	{% for col in world_cols %}
-					       		 <th scope="col">{{col}}</th>
+					    	  		{% if(col!=world_cols[0]) %}
+					    	   			<th scope="col" class="tcols">{{col}}</th>
+							        {% else %}
+								        <th scope="col" class="common-val">{{col}}</th>
+							        {% endif %}
 					        {% endfor %}
 					     
 					    </tr>
@@ -120,11 +124,17 @@
 
 					  	    {% for row in world_rows %}
 					    <tr>
-					        {% for val in row %}
-					        <td>
-					           {{val}}
-					        </td>
-					        {% endfor %}
+						        {% for val in row %}
+							        {% if(val==row[0]) %}
+								        <td class="f-col-val">
+								           <strong>{{val}}</strong>
+								        </td>
+							        {% else %}
+								        <td>
+								           {{val}}
+								        </td>
+							        {% endif %}
+						        {% endfor %}
 					    </tr>
 					    	{% endfor %}
 
@@ -171,7 +181,11 @@
 					    <tr>
 
 					    	{% for col in nation_cols %}
-					       		 <th scope="col">{{col}}</th>
+					       		 {% if(col!=nation_cols[0]) %}
+					    	   			<th scope="col" class="tcols">{{col}}</th>
+							        {% else %}
+								        <th scope="col" class="common-val">{{col}}</th>
+							        {% endif %}
 					        {% endfor %}
 					     
 					    </tr>
@@ -182,10 +196,16 @@
 					  	    {% for row in nation_rows %}
 					    <tr>
 					        {% for val in row %}
-					        <td>
-					           {{val}}
-					        </td>
-					        {% endfor %}
+							        {% if(val==row[0]) %}
+								        <td class="f-col-val">
+								           <strong>{{val}}</strong>
+								        </td>
+							        {% else %}
+								        <td>
+								           {{val}}
+								        </td>
+							        {% endif %}
+						        {% endfor %}
 					    </tr>
 					    	{% endfor %}
 
@@ -215,17 +235,61 @@
 
 	  <div class="container-fluid">
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-md-6">
-			<div class="card stable">
-			  <h5 class="card-title">Card title</h5>
-			  State table
+		  <div class="col-md-6 col-lg-6">
+			<div class="card nheat" id="nheat">
 			</div>
 		  </div>
-		  <div class="col-md-6">
-			<div class="card nheat">
-			  <h5 class="card-title">Card title</h5>
-			  Nation heat
+		  <div class="col-md-6 col-lg-6">
+
+			<form class="form-inline my-2 my-lg-0" id="wtable-search">
+		      <input class="form-control mr-sm-2" type="search" placeholder="Search : Gujarat" aria-label="Search">
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		    </form> 
+		    <br>
+			
+			<div class="stable">
+			   
+			    <div class="table-responsive-md">
+				   <table class="table table-bordered">
+					  <thead class="thead-dark">
+					    <tr>
+
+					    	{% for col in state_cols %}
+					       		 {% if(col!=state_cols[0]) %}
+					    	   			<th scope="col" class="tcols">{{col}}</th>
+							        {% else %}
+								        <th scope="col" class="common-val">{{col}}</th>
+							        {% endif %}
+					        {% endfor %}
+					     
+					    </tr>
+					  </thead>
+
+					  <tbody>
+
+					  	    {% for row in state_rows %}
+					    <tr>
+					        {% for val in row %}
+							        {% if(val==row[0]) %}
+								        <td class="f-col-val">
+								           <strong>{{val}}</strong>
+								        </td>
+							        {% else %}
+								        <td>
+								           {{val}}
+								        </td>
+							        {% endif %}
+						        {% endfor %}
+					    </tr>
+					    	{% endfor %}
+
+					  </tbody>
+
+					</table>
+				</div>
+
 			</div>
+
 		  </div>
 		</div>
 	  </div>
@@ -261,6 +325,7 @@
 		var world_heat = {{ world_heat | safe }}
 		var npie_labels = {{ npie_labels | safe }}
 		var npie_cases = {{ npie_cases | safe }}
+		var df_state = {{ df_state | safe }}
 
 </script>
 
