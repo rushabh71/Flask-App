@@ -37,23 +37,27 @@ body {
 }
 
 .parent {
-  padding:10px;
+  padding:5px;
 }
 
 
 .wtable {
-  height: 550px;
+  height: 600px;
   overflow: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .ntable {
-  height: 550px;
+  height: 500px;
   overflow: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
 
 }
 
 .npie {
-  height : 300px;
+  height : 425px;
 }
 
 .stable {
@@ -74,8 +78,9 @@ body {
 
 .wheat {
   width: 100%;
-  height: 600px;
-  overflow: auto;
+  height: 650px;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 footer p {
@@ -87,4 +92,34 @@ footer p {
 
 .update {
   text-align: center;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#wselect {
+  width: 30%;
+  float: right;
 }

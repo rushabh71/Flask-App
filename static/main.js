@@ -25,12 +25,19 @@
 	        locations: world_heat['countries'],
 	        z: world_heat['confirmed'],
 	        text: world_heat['countries'],
-	        autocolorscale: true
+	        autocolorscale: true,
+	        colorbar: {len: 0.5},
 	    }];
 
 	    var layout = {
-	      title: 'World COVID-19 Confirmed Cases',
-	      width: 800,
+	      title: {
+				    text:'World COVID-19 Confirmed Cases',
+				    x: 0.05,
+				    y: 0.92
+				  },
+	      width: 825,
+	      height: 650,
+	      margin: {l:0, r:0, b:0, t:0, pad: 0}
 	    };
 
 	    Plotly.newPlot("world_heat", data, layout, {showLink: false});
@@ -46,8 +53,8 @@
 
 		var layout = {
 		  title: 'Nationwide Cases Distribution',
-		  height: 350,
-		  width: 350
+		  height: 400,
+		  width: 400
 		};
 
 		Plotly.newPlot('nation_pie', data, layout);
