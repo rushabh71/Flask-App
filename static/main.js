@@ -20,6 +20,13 @@
 		//World heat map
 
 		showWorldHeat();
+
+		//Nation heat map
+
+		showNationHeat();
+
+		console.log(world_heat);
+		console.log(df_state);
 		
 
 
@@ -47,6 +54,9 @@
 			showWorldHeat(categ);
 		  });
 		});
+
+
+
 
 
    }
@@ -77,6 +87,61 @@
 	    };
 
 	    Plotly.newPlot("world_heat", data, layout, {showLink: false});
+ }
+
+ function showNationHeat(){
+
+ 	var data = [{
+ 		type: 'choropleth',
+ 		geojson : "https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson",
+	    featureidkey : 'properties.ST_NM',
+	    locationmode : 'geojson-id',
+	    locations : df_state['State'],
+	    z : df_state['Confirmed'],
+	    autocolorscale : true,
+	    colorbar : {
+	    	thickness : 15,
+	        len : 0.35,
+	        bgcolor : 'rgba(255,255,255,0.6)',
+
+	        tick0 : 0,
+	        dtick : 200000,
+
+	        xanchor : 'left',
+	        x : 0.8,
+	        yanchor : 'bottom',
+	        y : 0.1
+	      }
+	    }];
+
+
+
+	     var layout = {
+	     	title: {
+				    text: 'Cases Concentration By Statewise',
+				    x: 0.02,
+				    y: 0.92
+				  },
+		    margin : {'r': 0, 't': 60, 'l': 0, 'b': 0},
+		    width : 600,
+		    height : 600,
+		    title_x : 0.5,
+
+		    geo: {
+		    	visible : false,
+	            lonaxis : {'range': [68, 98]},
+		        lataxis : {'range': [6, 38]},
+	            projection: {
+	                type : 'conic conformal',
+			        parallels : [12.472944444, 35.172805555556],
+			        rotation : {'lat': 24, 'lon': 80}
+	            },
+	        },
+	    };
+
+
+		Plotly.newPlot("nheat", data, layout, {showLink: false});
+
  }
 
 
