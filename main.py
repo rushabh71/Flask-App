@@ -3,7 +3,7 @@ import os.path
 import re
 import urllib.request
 from datetime import date, datetime, timedelta
-
+from flask_paginate import Pagination, get_page_args, get_page_parameter
 import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
@@ -285,7 +285,6 @@ def prepare_state_data():
 	return json.dumps(object, cls=plotly.utils.PlotlyJSONEncoder)
 
 
-
 @app.route('/')
 def index():
 	global df_nation
@@ -310,4 +309,4 @@ def index():
 
 
 if (__name__ == '__main__'):
-	app.run(debug=True)
+	app.run(debug=True, port=8000, threaded=True)
