@@ -64,10 +64,6 @@
   text-align: center;
 }
 
-.cchart {
-  height:300px;
-}
-
 .schart {
   height:300px;
 }
@@ -89,7 +85,7 @@ footer p {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 /* Track */
@@ -118,13 +114,6 @@ footer p {
 }
 
 
-.f-col-val {
-  position: sticky; 
-  left: 0; 
-  max-width: 150px;
-  background-color: white;
-}
-
 th {
   z-index: 1
 }
@@ -142,6 +131,22 @@ th {
 .common-val {
   position: sticky; 
   top: 0; 
-  left: 0;
   z-index: 2;
+}
+
+.inline-ul {
+  list-style: none;
+  margin-top: 20px;
+}
+
+.inline-ul li {
+  display: inline;
+}
+
+#cselect, #tselect {
+  width: 300px;
+}
+
+.nimg {
+  margin-bottom: 5px;
 }

@@ -2,6 +2,9 @@
      if (document.readyState == "complete") {
      // document is ready.
 
+     	var cat = 'Confirmed';
+     	var type = 'Cumulative';
+
      	//Current numbers
 
      	getCurrentNumbers();
@@ -17,6 +20,11 @@
 	    //Nation pie chart
 
 		showNationPie();
+
+		//Category Charts
+
+		plotCategoryCharts();
+		plotCategoryCharts2();
 	   
 
 
@@ -27,6 +35,24 @@
 			showWorldHeat(categ);
 		  });
 		});
+
+
+		$(function() {
+		 $('#cselect').on('change', function() {
+		 	cat = $(this).val();
+		 	type = $('#tselect').val();
+			plotCategoryCharts(cat,type);
+		  });
+		});
+
+		$(function() {
+		 $('#tselect').on('change', function() {
+		 	cat = $('#cselect').val();
+		 	type = $(this).val();
+			plotCategoryCharts(cat,type);
+		  });
+		});
+
 
 		$('#wtable').DataTable({
 	        "order": [[ 1, "desc" ],[ 2, "desc" ]]
@@ -42,6 +68,181 @@
 
    }
  }
+
+ function plotCategoryCharts2(){
+
+	var x = dates;
+	var y = positivity_rate;
+
+	var data = [{
+	 	  x: x,
+	 	  y: y,
+		  type: 'scatter',
+	}];
+
+	var layout = {
+	  title: { 
+	  	    text: 'Positivity Rate',
+	    	x: 0.02,
+		    y: 0.92
+		},
+	  paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      xaxis: {
+      		title: {
+      			text: 'Dates',
+      		},
+      		tickmode: 'linear',
+      		linecolor: 'lightgray',
+      		gridcolor: 'lightgray', 
+      		tick0: '30/01/2020', 
+      		dtick: 30, 
+      		tickangle: -45, 
+      		automargin: true
+		  },
+	  yaxis: {
+	  		title: {
+      			text: 'Rate in %',
+      		},
+		    linecolor: 'lightgray',
+		    gridcolor: 'lightgray'
+		  },
+
+	};
+
+	var config = {responsive: true}
+
+	Plotly.newPlot('categ_charts_right1', data, layout, config);
+
+
+	//cases -pm vs test -pm
+
+	var data = [{
+	 	  x: x,
+	 	  y: cases_pm,
+	 	  name: 'Cases PM',
+		  type: 'scatter',
+	}, {
+
+		  x: x,
+		  y: tests_pm,
+		  name: 'Tests PM',
+		  type: 'scatter',
+	}];
+
+	var layout = {
+	  title: { 
+	  	    text: 'Cases PM V/S Tests PM',
+	    	x: 0.02,
+		    y: 0.92
+		},
+	  paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      xaxis: {
+      		title: {
+      			text: 'Dates',
+      		},
+      		tickmode: 'linear',
+      		linecolor: 'lightgray',
+      		gridcolor: 'lightgray', 
+      		tick0: '30/01/2020', 
+      		dtick: 30, 
+      		tickangle: -45, 
+      		automargin: true
+		  },
+	  yaxis: {
+	  		title: {
+      			text: 'Per Million',
+      		},
+		    linecolor: 'lightgray',
+		    gridcolor: 'lightgray'
+		  },
+
+	};
+
+	var config = {responsive: true}
+
+	Plotly.newPlot('categ_charts_right2', data, layout, config);
+
+ }
+
+
+
+function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative'){
+
+	y_data = {
+		'Cumulative': {
+			'Confirmed' : total_confirmed,
+			'Recovered' : total_recovered,
+			'Deceased'	: total_deceased,
+			'Active'	: total_active,
+			'Tested'	: total_tested
+		},
+		'Daily': {
+			'Confirmed' : daily_confirmed,
+			'Recovered' : daily_recovered,
+			'Deceased'	: daily_deceased,
+			'Active'	: daily_active,
+			'Tested'	: daily_tested
+		},
+		'Log': {
+			'Confirmed' : total_confirmed_log,
+			'Recovered' : total_recovered_log,
+			'Deceased'	: total_deceased_log,
+			'Active'	: total_active_log,
+			'Tested'	: total_tested_log
+		}
+	}
+
+	y_label = {
+			'Cumulative' : 'No. of Cases',
+			'Daily'		 : 'No. of Cases',
+			'Log'		 : 'Log of cases'
+	}
+
+
+	var x = dates;
+
+	var data = [{
+	 	  x: x,
+	 	  y: y_data[type][categ],
+		  type: 'scatter',
+	}];
+
+	var layout = {
+	  title: { 
+	  	    text: categ + ' Cases' + ' - ' + type,
+	    	x: 0.02,
+		    y: 0.92
+		},
+	  paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      xaxis: {
+      		title: {
+      			text: 'Dates',
+      		},
+      		tickmode: 'linear',
+      		linecolor: 'lightgray',
+      		gridcolor: 'lightgray', 
+      		tick0: '30/01/2020', 
+      		dtick: 30, 
+      		tickangle: -45, 
+      		automargin: true
+		  },
+	  yaxis: {
+	  		title: {
+      			text: y_label[type],
+      		},
+		    linecolor: 'lightgray',
+		    gridcolor: 'lightgray'
+		  },
+
+	};
+
+	var config = {responsive: true}
+
+	Plotly.newPlot('categ_charts', data, layout, config);
+}
 
 
  function getCurrentNumbers(){
@@ -67,7 +268,12 @@
 		}];
 
 		var layout = {
-		  title: 'Nationwide Cases Distribution',
+		  title: { 
+		  	    text: 'Nationwide Cases Distribution',
+		    	x: 0.02,
+			    y: 0.92
+			},
+
 		};
 
 		var config = {responsive: true}
@@ -131,7 +337,7 @@
 
      var layout = {
      	title: {
-			    text: 'Cases Concentration By Statewise',
+			    text: 'INDIA - Confirmed Cases',
 			    x: 0.02,
 			    y: 0.92
 			  },
