@@ -1,21 +1,10 @@
  document.onreadystatechange = function () {
      if (document.readyState == "complete") {
-     // document is ready. Do your stuff here
+     // document is ready.
 
      	//Current numbers
 
-	    document.getElementById("cum_confirmed").innerHTML = numbers['cum_numbers'][0];
-		document.getElementById("cum_recovered").innerHTML = numbers['cum_numbers'][1];
-		document.getElementById("cum_deceased").innerHTML = numbers['cum_numbers'][2];
-		document.getElementById("cum_active").innerHTML = numbers['cum_numbers'][3];
-		document.getElementById("cum_tested").innerHTML = numbers['cum_numbers'][4];
-
-		document.getElementById("daily_confirmed").innerHTML = numbers['daily_numbers'][0];
-		document.getElementById("daily_recovered").innerHTML = numbers['daily_numbers'][1];
-		document.getElementById("daily_deceased").innerHTML = numbers['daily_numbers'][2];
-		document.getElementById("daily_active").innerHTML = numbers['daily_numbers'][3];
-		document.getElementById("daily_tested").innerHTML = numbers['daily_numbers'][4];
-
+     	getCurrentNumbers();
 
 		//World heat map
 
@@ -25,26 +14,10 @@
 
 		showNationHeat();
 
-		console.log(world_heat);
-		console.log(df_state);
-		
-
-
 	    //Nation pie chart
 
-	    var data = [{
-		  values: npie_cases,
-		  labels: npie_labels,
-		  type: 'pie'
-		}];
-
-		var layout = {
-		  title: 'Nationwide Cases Distribution',
-		  height: 400,
-		  width: 400
-		};
-
-		Plotly.newPlot('nation_pie', data, layout);
+		showNationPie();
+	   
 
 
 		$(function() {
@@ -55,12 +28,53 @@
 		  });
 		});
 
+		$('#wtable').DataTable({
+	        "order": [[ 1, "desc" ],[ 2, "desc" ]]
+	    });
+
+
+    	$('#stable').DataTable({
+	        "order": [[ 2, "desc" ],[ 3, "desc" ]]
+	    });
 
 
 
 
    }
  }
+
+
+ function getCurrentNumbers(){
+ 	document.getElementById("cum_confirmed").innerHTML = numbers['cum_numbers'][0];
+	document.getElementById("cum_recovered").innerHTML = numbers['cum_numbers'][1];
+	document.getElementById("cum_deceased").innerHTML = numbers['cum_numbers'][2];
+	document.getElementById("cum_active").innerHTML = numbers['cum_numbers'][3];
+	document.getElementById("cum_tested").innerHTML = numbers['cum_numbers'][4];
+
+	document.getElementById("daily_confirmed").innerHTML = numbers['daily_numbers'][0];
+	document.getElementById("daily_recovered").innerHTML = numbers['daily_numbers'][1];
+	document.getElementById("daily_deceased").innerHTML = numbers['daily_numbers'][2];
+	document.getElementById("daily_active").innerHTML = numbers['daily_numbers'][3];
+	document.getElementById("daily_tested").innerHTML = numbers['daily_numbers'][4];
+}
+
+
+ function showNationPie(){
+ 	 var data = [{
+		  values: npie_cases,
+		  labels: npie_labels,
+		  type: 'pie'
+		}];
+
+		var layout = {
+		  title: 'Nationwide Cases Distribution',
+		};
+
+		var config = {responsive: true}
+
+		Plotly.newPlot('nation_pie', data, layout, config);
+ }
+
 
  function showWorldHeat(categ = 'Confirmed'){
 
@@ -81,13 +95,12 @@
 				    x: 0.02,
 				    y: 0.92
 				  },
-	      width: 825,
-	      height: 650,
-	      margin: {l:0, r:0, b:0, t:0, pad: 0}
+	      margin: {l:10, r:10, b:0, t:60, pad: 0}
 	    };
 
 	    Plotly.newPlot("world_heat", data, layout, {showLink: false});
  }
+
 
  function showNationHeat(){
 
@@ -116,31 +129,31 @@
 
 
 
-	     var layout = {
-	     	title: {
-				    text: 'Cases Concentration By Statewise',
-				    x: 0.02,
-				    y: 0.92
-				  },
-		    margin : {'r': 0, 't': 60, 'l': 0, 'b': 0},
-		    width : 600,
-		    height : 600,
-		    title_x : 0.5,
+     var layout = {
+     	title: {
+			    text: 'Cases Concentration By Statewise',
+			    x: 0.02,
+			    y: 0.92
+			  },
+	    margin : {'r': 0, 't': 60, 'l': 0, 'b': 0},
+	    title_x : 0.5,
 
-		    geo: {
-		    	visible : false,
-	            lonaxis : {'range': [68, 98]},
-		        lataxis : {'range': [6, 38]},
-	            projection: {
-	                type : 'conic conformal',
-			        parallels : [12.472944444, 35.172805555556],
-			        rotation : {'lat': 24, 'lon': 80}
-	            },
-	        },
-	    };
+	    geo: {
+	    	visible : false,
+            lonaxis : {'range': [68, 98]},
+	        lataxis : {'range': [6, 38]},
+            projection: {
+                type : 'conic conformal',
+		        parallels : [12.472944444, 35.172805555556],
+		        rotation : {'lat': 24, 'lon': 80}
+            },
+        },
+    };
+
+    var config = {responsive: true}
 
 
-		Plotly.newPlot("nheat", data, layout, {showLink: false});
+	Plotly.newPlot("nheat", data, layout, config, {showLink: false});
 
  }
 
