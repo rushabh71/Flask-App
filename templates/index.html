@@ -4,13 +4,17 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<meta http-equiv="X-UA-Compatible" content="chrome=1, IE=edge">
+	<link rel='shortcut icon' type='image/x-icon' href='https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/330px-SARS-CoV-2_without_background.png' />
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" href="{{ url_for('static', filename = 'main.css') }}">
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 	<script type="text/javascript" src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
@@ -23,7 +27,7 @@
 <body>
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">India Corona Cases&nbsp&nbsp<img src='https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/383px-Flag_of_India.svg.png' width="30", height="20"></a>
+      <a class="navbar-brand" href="#">INDIA CORONA CASES&nbsp&nbsp<img  class='nimg' src='https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/383px-Flag_of_India.svg.png' width="30", height="20"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -63,7 +67,7 @@
 			</div>
 		  </div>
 		  <div class="col">
-			<div class="alert alert-secondary" role="alert">
+			<div class="alert alert-dark" role="alert">
 			  <span class="cheader">Deceased</span><br>
 			  <span class="numbers" id="cum_deceased">12345678</span><br>
 			  <span class="daily"  id="daily_deceased">+12345678</span>
@@ -100,6 +104,8 @@
 			</div>
 		  </div>
 		  <div class="col-lg-5 col-md-6">
+
+		  	<br>
 
 			<div class="wtable">
 			  <div class="table-responsive-md">
@@ -219,7 +225,9 @@
 			</div>
 		  </div>
 		  <div class="col-md-6 col-lg-6">
-			
+
+			<br>
+
 			<div class="stable">
 			   
 			    <div class="table-responsive-md">
@@ -271,14 +279,29 @@
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
 		  <div class="col-md-6">
 			<div class="card cchart">
-			  <h5 class="card-title">Card title</h5>
-			  Category charts
+				<ul class="inline-ul">
+					<li><p>Category</p></li>
+					<li><select class="form-control" id="cselect">
+					  <option>Confirmed</option>
+					  <option>Recovered</option>
+					  <option>Deceased</option>
+					  <option>Active</option>
+					  <option>Tested</option>
+					</select></li><br>
+					<li><p>Graph</p></li>
+					<li><select class="form-control" id="tselect">
+					  <option>Cumulative</option>
+					  <option>Daily</option>
+					  <option>Log</option>
+					</select></li>
+				</ul>
+				<div id="categ_charts"></div>
 			</div>
 		  </div>
 		  <div class="col-md-6">
-			<div class="card schart">
-			  <h5 class="card-title">Card title</h5>
-			  State charts
+			<div class="card cchart">
+			  <div id="categ_charts_right1"></div>
+			  <div id="categ_charts_right2"></div>
 			</div>
 		  </div>
 		</div>
@@ -299,6 +322,25 @@
 		var npie_labels = {{ npie_labels | safe }}
 		var npie_cases = {{ npie_cases | safe }}
 		var df_state = {{ df_state | safe }}
+		var total_confirmed = {{ total_confirmed | safe }}
+		var total_recovered = {{ total_recovered | safe }}
+		var total_active = {{ total_active | safe }}
+		var total_deceased = {{ total_deceased | safe }}
+		var total_tested = {{ total_tested | safe }}
+		var daily_confirmed = {{ daily_confirmed | safe }}
+		var daily_recovered = {{ daily_recovered | safe }}
+		var daily_deceased = {{ daily_deceased | safe }}
+		var daily_active = {{ daily_active | safe }}
+		var daily_tested = {{ daily_tested | safe }}
+		var dates = {{ dates | safe }}
+		var total_confirmed_log = {{ total_confirmed_log | safe }}
+		var total_recovered_log = {{ total_recovered_log | safe }}
+		var total_active_log = {{ total_active_log | safe }}
+		var total_deceased_log = {{ total_deceased_log | safe }}
+		var total_tested_log = {{ total_tested_log | safe }}
+		var cases_pm = {{ cases_pm | safe }}
+		var tests_pm = {{ tests_pm | safe }}
+		var positivity_rate = {{ positivity_rate | safe }}
 
 </script>
 
