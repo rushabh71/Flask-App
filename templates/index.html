@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<meta http-equiv="X-UA-Compatible" content="chrome=1, IE=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" href="{{ url_for('static', filename = 'main.css') }}">
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -12,6 +13,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 	<script type = "text/javascript" 
          src = "{{ url_for('static', filename = 'main.js') }}" ></script>
 	
@@ -21,7 +23,7 @@
 <body>
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">India Corona Cases&nbsp&nbsp<img src='https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/383px-Flag_of_India.svg.png' width="34", height="20"></a>
+      <a class="navbar-brand" href="#">India Corona Cases&nbsp&nbsp<img src='https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/383px-Flag_of_India.svg.png' width="30", height="20"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -93,19 +95,15 @@
 				  <option>Deceased</option>
 				  <option>Active</option>
 			</select>
-			<div class="card wheat" id="world_heat">
+			<div class="card wheat">
+				<div id="world_heat"></div>
 			</div>
 		  </div>
 		  <div class="col-lg-5 col-md-6">
 
-			<form class="form-inline my-2 my-lg-0" id="wtable-search">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search : United States" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		    </form> 
-
 			<div class="wtable">
 			  <div class="table-responsive-md">
-				   <table class="table table-bordered">
+				   <table class="table table-bordered" id="wtable">
 					  <thead class="thead-dark">
 					    <tr>
 
@@ -143,19 +141,10 @@
 					</table>
 
 				</div>
+
 			</div>
 
 			<br>
-
-			<nav aria-label="Page navigation example">
-			  <ul class="pagination">
-			    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-			    <li class="page-item"><a class="page-link" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-			    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-			  </ul>
-			</nav>
 
 		  </div>
 		</div>
@@ -176,7 +165,7 @@
 			<div class="ntable">
 			   
 			    <div class="table-responsive-md">
-				   <table class="table table-bordered">
+				   <table class="table table-bordered" id="ntable">
 					  <thead class="thead-dark">
 					    <tr>
 
@@ -218,16 +207,6 @@
 
 			<br>
 
-			<nav aria-label="Page navigation example">
-			  <ul class="pagination">
-			    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-			    <li class="page-item"><a class="page-link" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-			    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-			  </ul>
-			</nav>
-
 		  </div>
 		</div>
 	  </div>
@@ -240,17 +219,11 @@
 			</div>
 		  </div>
 		  <div class="col-md-6 col-lg-6">
-
-			<form class="form-inline my-2 my-lg-0" id="wtable-search">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search : Gujarat" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		    </form> 
-		    <br>
 			
 			<div class="stable">
 			   
 			    <div class="table-responsive-md">
-				   <table class="table table-bordered">
+				   <table class="table table-bordered" id="stable">
 					  <thead class="thead-dark">
 					    <tr>
 
