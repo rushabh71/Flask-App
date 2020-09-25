@@ -21,6 +21,7 @@ from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, jsonify
 from flask import Markup
 from flask import session
+from numpy import inf
 
 world_df = None
 df_nation = None
@@ -137,7 +138,7 @@ def get_numbers():
 	total_deceased = [int(i.get('totaldeceased', None)) for i in data.get('cases_time_series', None)]
 	total_recovered = [int(i.get('totalrecovered', None)) for i in data.get('cases_time_series', None)]
 
-	offset = 40
+	offset = 41
 
 	daily_tested = [0 for i in range(offset)] + [toint(i.get('samplereportedtoday', None)) for i in
 												 data.get('tested', None)]
@@ -302,10 +303,74 @@ def index():
 	npie_cases = [df_nation.loc['Total Confirmed', dates[-1]], df_nation.loc['Total Deceased', dates[-1]],
 			 df_nation.loc['Total Recovered', dates[-1]], df_nation.loc['Total Active', dates[-1]]]
 
-	return render_template('index.html', world_heat=world_heat, numbers = numbers, world_cols = world_df.columns.values, world_rows = world_df.values.tolist(),
-						   nation_cols = df_nation.reset_index().columns.values, nation_rows = df_nation.reset_index().values.tolist(), npie_labels = npie_labels,
-						   npie_cases = npie_cases, end_date = end_date, df_state = nation_heat, state_cols = df_state.columns.values,
-						   state_rows = df_state.values.tolist() )
+	total_confirmed = df_nation.loc['Total Confirmed',:].astype(int).values.tolist()
+	total_recovered = df_nation.loc['Total Recovered',:].astype(int).values.tolist()
+	total_deceased = df_nation.loc['Total Deceased',:].astype(int).values.tolist()
+	total_active = df_nation.loc['Total Active',:].astype(int).values.tolist()
+	total_tested = df_nation.loc['Total Tested',:].str.replace(',','').fillna(0).astype(int).values.tolist()
+
+	daily_confirmed = df_nation.loc['Daily Confirmed',:].astype(int).values.tolist()
+	daily_recovered = df_nation.loc['Daily Recovered',:].astype(int).values.tolist()
+	daily_deceased = df_nation.loc['Daily Deceased',:].astype(int).values.tolist()
+	daily_active = df_nation.loc['Daily Active',:].astype(int).values.tolist()
+	daily_tested = df_nation.loc['Daily Tested',:].str.replace(',','').fillna(0).astype(int).values.tolist()
+
+	total_confirmed_log = np.log(total_confirmed)
+	total_confirmed_log[total_confirmed_log == -inf] = 0
+	total_confirmed_log[total_confirmed_log ==  inf] = 0
+	total_confirmed_log = total_confirmed_log.tolist()
+
+	total_deceased_log = np.log(total_deceased)
+	total_deceased_log[total_deceased_log == -inf] = 0
+	total_deceased_log[total_deceased_log == inf] = 0
+	total_deceased_log = total_deceased_log.tolist()
+
+	total_tested_log = np.log(total_tested)
+	total_tested_log[total_tested_log == -inf] = 0
+	total_tested_log[total_tested_log == inf] = 0
+	total_tested_log = total_tested_log.tolist()
+
+	total_active_log = np.log(total_active)
+	total_active_log[total_active_log == -inf] = 0
+	total_active_log[total_active_log == inf] = 0
+	total_active_log = total_active_log.tolist()
+
+	total_recovered_log = np.log(total_recovered)
+	total_recovered_log[total_recovered_log == -inf] = 0
+	total_recovered_log[total_recovered_log == inf] = 0
+	total_recovered_log = total_recovered_log.tolist()
+
+	positivity_rate = df_nation.loc['Positivity Rate',:].str.replace('%','').replace('',0).fillna(method='ffill').fillna(0).astype(float).replace(0,method='ffill').tolist()
+	cases_pm = df_nation.loc['Cases PM',:].astype(int).values.tolist()
+	tests_pm = df_nation.loc['Tests PM',:].astype(int).values.tolist()
+
+	dates.reverse()
+	df_nation = df_nation[dates]
+	# total_active_log = reversed((df_nation.loc['Total Active', :].values.tolist()))
+
+	return render_template('index.html',
+
+						   world_heat=world_heat, numbers = numbers, world_cols = world_df.columns.values,
+						   world_rows = world_df.values.tolist(),
+
+						   nation_cols = df_nation.reset_index().columns.values, nation_rows = df_nation.reset_index().values.tolist(),
+						   npie_labels = npie_labels, npie_cases = npie_cases, end_date = end_date,
+
+						   df_state = nation_heat, state_cols = df_state.columns.values, state_rows = df_state.values.tolist(),
+
+						   total_confirmed = total_confirmed, total_deceased = total_deceased, total_recovered = total_recovered,
+						   total_tested = total_tested, total_active = total_active, dates = list(reversed(dates)),
+
+						   daily_confirmed = daily_confirmed, daily_deceased = daily_deceased, daily_tested = daily_tested,
+						   daily_active = daily_active, daily_recovered = daily_recovered,
+
+						   total_confirmed_log = total_confirmed_log, total_deceased_log = total_deceased_log,
+						   total_tested_log = total_tested_log, total_active_log = total_active_log,
+						   total_recovered_log = total_recovered_log,
+
+						   positivity_rate = positivity_rate, cases_pm = cases_pm, tests_pm = tests_pm,
+
+						   )
 
 
 if (__name__ == '__main__'):
