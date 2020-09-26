@@ -138,7 +138,7 @@ def get_numbers():
 	total_deceased = [int(i.get('totaldeceased', None)) for i in data.get('cases_time_series', None)]
 	total_recovered = [int(i.get('totalrecovered', None)) for i in data.get('cases_time_series', None)]
 
-	offset = 41
+	offset = 40
 
 	daily_tested = [0 for i in range(offset)] + [toint(i.get('samplereportedtoday', None)) for i in
 												 data.get('tested', None)]
@@ -320,22 +320,38 @@ def index():
 	total_confirmed_log[total_confirmed_log ==  inf] = 0
 	total_confirmed_log = total_confirmed_log.tolist()
 
-	total_deceased_log = np.log(total_deceased)
+	array = np.array(total_deceased)
+	array[array == -inf] = 1
+	array[array == inf] = 1
+	array[array == 0] = 1
+	total_deceased_log = np.log(array)
 	total_deceased_log[total_deceased_log == -inf] = 0
 	total_deceased_log[total_deceased_log == inf] = 0
 	total_deceased_log = total_deceased_log.tolist()
 
-	total_tested_log = np.log(total_tested)
+	array = np.array(total_tested)
+	array[array == -inf] = 1
+	array[array == inf] = 1
+	array[array == 0] = 1
+	total_tested_log = np.log(array)
 	total_tested_log[total_tested_log == -inf] = 0
 	total_tested_log[total_tested_log == inf] = 0
 	total_tested_log = total_tested_log.tolist()
 
-	total_active_log = np.log(total_active)
+	array = np.array(total_active)
+	array[array == -inf] = 1
+	array[array == inf] = 1
+	array[array == 0] = 1
+	total_active_log = np.log(array)
 	total_active_log[total_active_log == -inf] = 0
 	total_active_log[total_active_log == inf] = 0
 	total_active_log = total_active_log.tolist()
 
-	total_recovered_log = np.log(total_recovered)
+	array = np.array(total_recovered)
+	array[array == -inf] = 1
+	array[array == inf] = 1
+	array[array == 0] = 1
+	total_recovered_log = np.log(array)
 	total_recovered_log[total_recovered_log == -inf] = 0
 	total_recovered_log[total_recovered_log == inf] = 0
 	total_recovered_log = total_recovered_log.tolist()
@@ -374,4 +390,4 @@ def index():
 
 
 if (__name__ == '__main__'):
-	app.run(debug=True)
+	app.run(debug=True, port=8000, threaded=True)
