@@ -362,7 +362,17 @@ def index():
 
 	dates.reverse()
 	df_nation = df_nation[dates]
-	# total_active_log = reversed((df_nation.loc['Total Active', :].values.tolist()))
+
+	df_state = df_state.sort_values(by='Confirmed', ascending=False)
+	state_labels = df_state['State'][0:10].values.tolist()
+	state_confirmed = df_state['Confirmed'][0:10].values.tolist()
+	state_deceased = df_state['Deceased'][0:10].values.tolist()
+	state_active = df_state['Active'][0:10].values.tolist()
+	state_recovered = df_state['Recovered'][0:10].values.tolist()
+	state_tested = df_state['Tested'][0:10].values.tolist()
+	state_labels_full = df_state['State'].values.tolist()
+	state_confirmed_full = df_state['Confirmed'].values.tolist()
+	state_tested_full = df_state['Tested'].values.tolist()
 
 	return render_template('index.html',
 
@@ -385,6 +395,12 @@ def index():
 						   total_recovered_log = total_recovered_log,
 
 						   positivity_rate = positivity_rate, cases_pm = cases_pm, tests_pm = tests_pm,
+
+						   state_labels = state_labels, state_confirmed = state_confirmed, state_recovered = state_recovered,
+						   state_active = state_active, state_tested = state_tested, state_deceased = state_deceased,
+						   state_labels_full = state_labels_full, state_confirmed_full = state_confirmed_full,
+						   state_tested_full = state_tested_full,
+
 
 						   )
 
