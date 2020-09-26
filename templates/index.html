@@ -50,6 +50,24 @@
 		  Last Updated : {{ end_date }}
 	  </div>
 
+	  <p>
+	  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+	    What is COVID-19?
+	  </a>
+	  </p>
+	  <div class="collapse" id="collapseExample">
+		  <div class="card card-body">
+		    <div class="jumbotron">
+			  <h1 class="display-4">COVID-19</h1>
+			  <p class="lead">The COVID-19 pandemic, also known as the coronavirus pandemic, is an ongoing pandemic of coronavirus disease 2019 (COVID-19) caused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2). The disease was first identified in December 2019 in Wuhan, China. The World Health Organization declared the outbreak a Public Health Emergency of International Concern on 30 January 2020 and a pandemic on 11 March 2020.</p>
+			  <hr class="my-4">
+			  <p>For more information go to Ministry of Health website</p>
+			  <a class="btn btn-primary btn-lg" href="https://www.mohfw.gov.in/" role="button">Ministry of Health</a>
+			</div>
+		  </div>
+	  </div>
+
+
 	  <div class="container-fluid">
 		<div class="row row-cols-2 row-cols-sm-2 row-cols-md-5 row-cols-lg-5">
 		  <div class="col">
@@ -277,7 +295,7 @@
 	  
 	  <div class="container-fluid">
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-md-6">
+		  <div class="col-md-6 col-lg-6">
 			<div class="card cchart">
 				<ul class="inline-ul">
 					<li><p>Category</p></li>
@@ -298,7 +316,7 @@
 				<div id="categ_charts"></div>
 			</div>
 		  </div>
-		  <div class="col-md-6">
+		  <div class="col-md-6 col-lg-6">
 			<div class="card cchart">
 			  <div id="categ_charts_right1"></div>
 			  <div id="categ_charts_right2"></div>
@@ -306,6 +324,37 @@
 		  </div>
 		</div>
 	  </div>
+
+
+	  <div class="container-fluid">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
+		  <div class="col-md-7 col-lg-7">
+			<div class="card cchart">
+				<div id="top_state"></div>
+			</div>
+		  </div>
+		  <div class="col-md-5 col-lg-5">
+			<div class="card cchart">
+			 	<div id="state_pie"></div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
+
+	  <div class="container-fluid">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
+		  <div class="col-md-6 col-lg-6">
+			<div class="card cchart">
+				<div id="state_test_cases"></div>
+			</div>
+		  </div>
+		  <div class="col-md-6 col-lg-6">
+			
+		  </div>
+		</div>
+	  </div>
+
 	  
     </div>
        
@@ -341,6 +390,15 @@
 		var cases_pm = {{ cases_pm | safe }}
 		var tests_pm = {{ tests_pm | safe }}
 		var positivity_rate = {{ positivity_rate | safe }}
+		var state_labels = {{ state_labels | safe }}
+		var state_confirmed = {{ state_confirmed | safe }}
+		var state_recovered = {{ state_recovered | safe }}
+		var state_deceased = {{ state_deceased | safe }}
+		var state_active = {{ state_active | safe }}
+		var state_tested = {{ state_tested | safe }}
+		var state_labels_full = {{ state_labels_full | safe }}
+		var state_confirmed_full = {{ state_confirmed_full | safe }}
+		var state_tested_full = {{ state_tested_full | safe }}
 
 </script>
 
