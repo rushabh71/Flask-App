@@ -25,7 +25,18 @@
 
 		plotCategoryCharts();
 		plotCategoryCharts2();
+
+		//Top 10 state chart
+
+		plotTopStateChart();
+
+		//State pie chart
+
+		plotStatePie();
 	   
+	    //State tests vs cases
+
+	    plotStateTestCases();
 
 
 		$(function() {
@@ -64,12 +75,170 @@
 	    });
 
 
-
-
    }
  }
 
- function plotCategoryCharts2(){
+
+ function plotStateTestCases(){
+
+ 	var col = [];
+
+	for(var i = 0; i < state_confirmed_full.length; i++){
+		 col.push('rgb(' + Math.random(0,255) + ',' + Math.random(0,255) + ',' + Math.random(0,255) + ')');
+	}
+   
+ 	var data = [{
+ 	  x: state_confirmed_full,
+ 	  y: state_tested_full,
+	  type: 'scatter',
+	  mode: 'markers',
+	  text: state_labels_full,
+	  marker: {
+	  	color: col,
+	  },
+	}];
+
+	var layout = {
+	  title: {
+	  	text: 'Confirmed Cases V/S Samples Tested',
+	  	x: 0.02,
+		y: 0.92
+	    },
+	  showlegend: false,
+	  xaxis: {
+	  		title: {
+	  			text: 'Confirmed Cases',
+	  		},
+	  		linecolor: 'lightgray',
+	  		gridcolor: 'lightgray', 
+		  },
+	  yaxis: {
+	  		title: {
+	  			text: 'Samples Tested',
+	  		},
+		    linecolor: 'lightgray',
+		    gridcolor: 'lightgray'
+		  },
+	};
+
+	var config = {responsive: true}
+
+	Plotly.newPlot('state_test_cases', data, layout, config);
+
+ }
+
+
+ function plotStatePie(){
+
+ 	var data = [{
+	  values: state_confirmed,
+	  labels: state_labels,
+	  domain: {column: 0},
+	  name: 'Confirmed',
+	  hoverinfo: 'label+percent+name',
+	  hole: .4,
+	  type: 'pie'
+	}];
+
+	var layout = {
+	  title: {
+	  	text: 'Statewise Confirmed Cases [Top-10]',
+	  	x: 0.02,
+		y: 0.92
+	},
+	  showlegend: true,
+	};
+
+	var config = {responsive: true}
+
+	Plotly.newPlot('state_pie', data, layout, config);
+
+ }
+
+
+
+function plotTopStateChart(){
+
+	var x = state_labels;
+
+	var data = [{
+	 	  x: x,
+	 	  y: state_confirmed,
+	 	  name: 'Confirmed',
+		  type: 'bar',
+	},{
+	 	  x: x,
+	 	  y: state_active,
+	 	  name: 'Active',
+		  type: 'bar',
+	},{
+	 	  x: x,
+	 	  y: state_recovered,
+	 	  name: 'Recovered',
+		  type: 'bar',
+	},{
+	 	  x: x,
+	 	  y: state_deceased,
+	 	  name: 'Deceased',
+		  type: 'bar',
+	},{
+	 	  x: x,
+	 	  y: state_tested,
+	 	  name: 'Tested',
+	 	  yaxis: 'y2',
+		  type: 'scatter',
+	}];
+
+
+	var layout = {
+	  barmode: 'stack',
+	  title: { 
+	  	    text: 'Top 10 States With Confirmed Cases',
+	    	x: 0.02,
+		    y: 0.92
+		},
+	  paper_bgcolor: 'rgba(0,0,0,0)',
+	  plot_bgcolor: 'rgba(0,0,0,0)',
+	  xaxis: {
+	  		title: {
+	  			text: 'States',
+	  		},
+	  		linecolor: 'lightgray',
+	  		gridcolor: 'lightgray', 
+	  		tickangle: -45, 
+	  		automargin: true
+		  },
+	  yaxis: {
+	  		title: {
+	  			text: 'No. of Cases',
+	  		},
+		    linecolor: 'lightgray',
+		    gridcolor: 'lightgray'
+		  },
+	  yaxis2: {
+		   title: {
+	  			text: 'No. of Samples',
+	  		},
+		    linecolor: 'lightgray',
+		    gridcolor: 'lightgray',
+		    overlaying: 'y',
+		    side: 'right'
+  		  },
+  	  legend: {
+		    x: 1,
+		    y: 1.25,
+		  },
+
+	};
+
+	var config = {responsive: true}
+
+	Plotly.newPlot('top_state', data, layout, config);
+
+}
+
+
+function plotCategoryCharts2(){
 
 	var x = dates;
 	var y = positivity_rate;
@@ -87,23 +256,23 @@
 		    y: 0.92
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
-      plot_bgcolor: 'rgba(0,0,0,0)',
-      xaxis: {
-      		title: {
-      			text: 'Dates',
-      		},
-      		tickmode: 'linear',
-      		linecolor: 'lightgray',
-      		gridcolor: 'lightgray', 
-      		tick0: '30/01/2020', 
-      		dtick: 30, 
-      		tickangle: -45, 
-      		automargin: true
+	  plot_bgcolor: 'rgba(0,0,0,0)',
+	  xaxis: {
+	  		title: {
+	  			text: 'Dates',
+	  		},
+	  		tickmode: 'linear',
+	  		linecolor: 'lightgray',
+	  		gridcolor: 'lightgray', 
+	  		tick0: '30/01/2020', 
+	  		dtick: 30, 
+	  		tickangle: -45, 
+	  		automargin: true
 		  },
 	  yaxis: {
 	  		title: {
-      			text: 'Rate in %',
-      		},
+	  			text: 'Rate in %',
+	  		},
 		    linecolor: 'lightgray',
 		    gridcolor: 'lightgray'
 		  },
@@ -137,23 +306,23 @@
 		    y: 0.92
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
-      plot_bgcolor: 'rgba(0,0,0,0)',
-      xaxis: {
-      		title: {
-      			text: 'Dates',
-      		},
-      		tickmode: 'linear',
-      		linecolor: 'lightgray',
-      		gridcolor: 'lightgray', 
-      		tick0: '30/01/2020', 
-      		dtick: 30, 
-      		tickangle: -45, 
-      		automargin: true
+	  plot_bgcolor: 'rgba(0,0,0,0)',
+	  xaxis: {
+	  		title: {
+	  			text: 'Dates',
+	  		},
+	  		tickmode: 'linear',
+	  		linecolor: 'lightgray',
+	  		gridcolor: 'lightgray', 
+	  		tick0: '30/01/2020', 
+	  		dtick: 30, 
+	  		tickangle: -45, 
+	  		automargin: true
 		  },
 	  yaxis: {
 	  		title: {
-      			text: 'Per Million',
-      		},
+	  			text: 'Per Million',
+	  		},
 		    linecolor: 'lightgray',
 		    gridcolor: 'lightgray'
 		  },
@@ -164,7 +333,7 @@
 
 	Plotly.newPlot('categ_charts_right2', data, layout, config);
 
- }
+}
 
 
 
@@ -207,6 +376,7 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative'){
 	 	  x: x,
 	 	  y: y_data[type][categ],
 		  type: 'scatter',
+		  fill: 'tonexty',
 	}];
 
 	var layout = {
@@ -264,7 +434,8 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative'){
  	 var data = [{
 		  values: npie_cases,
 		  labels: npie_labels,
-		  type: 'pie'
+		  hole: .4,
+		  type: 'pie',
 		}];
 
 		var layout = {
@@ -273,6 +444,16 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative'){
 		    	x: 0.02,
 			    y: 0.92
 			},
+		  annotations: [
+			    {
+			      font: {
+			        size: 20
+			      },
+			      showarrow: false,
+			      text: 'INDIA',
+			      x: 0.5,
+			      y: 0.5
+			    },]
 
 		};
 
