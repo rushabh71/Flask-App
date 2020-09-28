@@ -39,6 +39,7 @@
 	    plotStateTestCases();
 
 
+
 		$(function() {
 		 $('#wselect').on('change', function() {
 		 	var categ = $(this).val();
@@ -64,6 +65,16 @@
 		  });
 		});
 
+		$(function() {
+		 $('#sselect').on('change', function() {
+		 	var state = $(this).val();
+		 	$.post("/state", {"state": state},
+			function(response){
+				 plotStateChart(response.state);
+			});
+		  });
+		});
+
 
 		$('#wtable').DataTable({
 	        "order": [[ 1, "desc" ],[ 2, "desc" ]]
@@ -75,11 +86,69 @@
 	    });
 
 
+
+		$(function() {
+			var state = $('#sselect').val();
+		 	$.post("/state", {"state": state},
+			function(response){
+				plotStateChart(response.state);
+			});
+		 });
+
    }
- }
+}
 
 
- function plotStateTestCases(){
+ function plotStateChart(state){
+
+ 	formatValue = d3.format(".3s");
+
+ 	var data = [{
+ 	  x: ['Confirmed','Recovered','Active','Deceased'],
+ 	  y: [state['Confirmed'],state['Recovered'],state['Active'],state['Deceased']],
+ 	  text: [formatValue(state['Confirmed']),formatValue(state['Recovered']),formatValue(state['Active']),formatValue(state['Deceased'])],
+ 	  textposition: 'auto',
+ 	  hoverinfo:"x+y",
+	  marker: {
+   		color: ['blue', 'green', 'orange', 'gray'],
+   	  },
+	  type: 'bar',
+	}];
+
+	var layout = {
+	  title: {
+	  	text: 'Total Samples Tested : ' + formatValue(state['Tested']),
+	  	x: 0.02,
+		y: 0.92
+	    },
+	  showlegend: false,
+	  xaxis: {
+	  		title: {
+	  			text: 'Categories',
+	  		},
+	  		linecolor: 'lightgray',
+	  		gridcolor: 'lightgray', 
+		  },
+	  yaxis: {
+	  		title: {
+	  			text: 'No. of Cases',
+	  		},
+		    linecolor: 'lightgray',
+		    gridcolor: 'lightgray'
+		  },
+	  bargap: 0.5,
+	};
+
+	var config = {responsive: true}
+
+	Plotly.newPlot('state_chart', data, layout, config);
+
+}
+
+
+
+
+function plotStateTestCases(){
 
  	var col = [];
 
@@ -225,9 +294,10 @@ function plotTopStateChart(){
 		    side: 'right'
   		  },
   	  legend: {
-		    x: 1,
-		    y: 1.25,
+		    x: 1.25,
+		    y: 0.5,
 		  },
+		  bargap: 0.5,
 
 	};
 
@@ -444,16 +514,6 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative'){
 		    	x: 0.02,
 			    y: 0.92
 			},
-		  annotations: [
-			    {
-			      font: {
-			        size: 20
-			      },
-			      showarrow: false,
-			      text: 'INDIA',
-			      x: 0.5,
-			      y: 0.5
-			    },]
 
 		};
 

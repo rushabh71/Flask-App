@@ -145,6 +145,7 @@ th {
 
 .inline-ul li {
   display: inline;
+  width: 200px;
 }
 
 #cselect, #tselect {
@@ -153,4 +154,28 @@ th {
 
 .nimg {
   margin-bottom: 5px;
+}
+
+#sselect {
+  width: 200px;
+  margin: 20px;
+} 
+
+.panel {
+  box-shadow: 3px 3px 3px lightgray;
+  border: 1px solid lightgray;
+  transition: scale 5s ease-in;
+}
+
+.panel:hover {
+  transform: scale(1.05);
+}
+
+.dchange {
+  position: relative;
+  top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
