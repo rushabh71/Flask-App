@@ -56,50 +56,48 @@
 	  </a>
 	  </p>
 	  <div class="collapse" id="collapseExample">
-		  <div class="card card-body">
-		    <div class="jumbotron">
+		   <div class="jumbotron">
 			  <h1 class="display-4">COVID-19</h1>
 			  <p class="lead">The COVID-19 pandemic, also known as the coronavirus pandemic, is an ongoing pandemic of coronavirus disease 2019 (COVID-19) caused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2). The disease was first identified in December 2019 in Wuhan, China. The World Health Organization declared the outbreak a Public Health Emergency of International Concern on 30 January 2020 and a pandemic on 11 March 2020.</p>
 			  <hr class="my-4">
 			  <p>For more information go to Ministry of Health website</p>
 			  <a class="btn btn-primary btn-lg" href="https://www.mohfw.gov.in/" role="button">Ministry of Health</a>
 			</div>
-		  </div>
 	  </div>
 
 
 	  <div class="container-fluid">
 		<div class="row row-cols-2 row-cols-sm-2 row-cols-md-5 row-cols-lg-5">
 		  <div class="col">
-			<div class="alert alert-danger" role="alert">
+			<div class="alert alert-danger panel" role="alert">
 			  <span class="cheader">Confirmed</span><br>
 			  <span class="numbers" id="cum_confirmed">+12345678</span><br>
 			  <span class="daily"  id="daily_confirmed">+12345678</span>
 			</div>
 		  </div>
 		  <div class="col">
-			<div class="alert alert-success" role="alert">
+			<div class="alert alert-success panel" role="alert">
 			  <span class="cheader">Recovered</span><br>
 			  <span class="numbers" id="cum_recovered">12345678</span><br>
 			  <span class="daily" id="daily_recovered">+12345678</span>
 			</div>
 		  </div>
 		  <div class="col">
-			<div class="alert alert-dark" role="alert">
+			<div class="alert alert-dark panel" role="alert">
 			  <span class="cheader">Deceased</span><br>
 			  <span class="numbers" id="cum_deceased">12345678</span><br>
 			  <span class="daily"  id="daily_deceased">+12345678</span>
 			</div>
 		  </div>
 		  <div class="col">
-			<div class="alert alert-warning" role="alert">
+			<div class="alert alert-warning panel" role="alert">
 			  <span class="cheader">Active</span><br>
 			  <span class="numbers" id="cum_active">12345678</span><br>
 			  <span class="daily" id="daily_active">+12345678</span>
 			</div>
 		  </div>
 		  <div class="col">
-			<div class="alert alert-info" role="alert">
+			<div class="alert alert-info panel" role="alert">
 			  <span class="cheader">Tested</span><br>
 			  <span class="numbers" id="cum_tested">12345678</span><br>
 			  <span class="daily" id="daily_tested">+12345678</span>
@@ -313,11 +311,21 @@
 					  <option>Log</option>
 					</select></li>
 				</ul>
+				<div class="btn-group dchange" role="group" aria-label="Basic example">
+				  <button type="button" class="btn btn-secondary active">Beginning</button>
+				  <button type="button" class="btn btn-secondary">Last 60 Days</button>
+				  <button type="button" class="btn btn-secondary">Last 7 Days</button>
+				</div>
 				<div id="categ_charts"></div>
 			</div>
 		  </div>
 		  <div class="col-md-6 col-lg-6">
 			<div class="card cchart">
+				<div class="btn-group dchange" role="group" aria-label="Basic example">
+				  <button type="button" class="btn btn-secondary active">Beginning</button>
+				  <button type="button" class="btn btn-secondary">Last 60 Days</button>
+				  <button type="button" class="btn btn-secondary">Last 7 Days</button>
+				</div>
 			  <div id="categ_charts_right1"></div>
 			  <div id="categ_charts_right2"></div>
 			</div>
@@ -350,7 +358,16 @@
 			</div>
 		  </div>
 		  <div class="col-md-6 col-lg-6">
-			
+		  	<div class="card cchart">
+				<select class="form-control" id="sselect">
+			  		{% for sname in state_labels_full %}
+					  <option>{{ sname }}</option>
+					{% endfor %}
+				</select>
+
+				<div id="state_chart"></div>
+				
+			</div>
 		  </div>
 		</div>
 	  </div>
@@ -399,6 +416,7 @@
 		var state_labels_full = {{ state_labels_full | safe }}
 		var state_confirmed_full = {{ state_confirmed_full | safe }}
 		var state_tested_full = {{ state_tested_full | safe }}
+		var state_deceased_full = {{ state_deceased_full | safe }}
 
 </script>
 
