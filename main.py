@@ -138,7 +138,7 @@ def get_numbers():
 	total_deceased = [int(i.get('totaldeceased', None)) for i in data.get('cases_time_series', None)]
 	total_recovered = [int(i.get('totalrecovered', None)) for i in data.get('cases_time_series', None)]
 
-	offset = 40
+	offset = 41
 
 	daily_tested = [0 for i in range(offset)] + [toint(i.get('samplereportedtoday', None)) for i in
 												 data.get('tested', None)]
@@ -286,6 +286,24 @@ def prepare_state_data():
 	return json.dumps(object, cls=plotly.utils.PlotlyJSONEncoder)
 
 
+
+@app.route('/state', methods=['POST'])
+def getStateData():
+	sname = request.form.get('state', 'Maharashtra', type=str)
+
+	df = df_state[df_state['State']==sname]
+
+	data = {
+		'Confirmed' : str(df['Confirmed'].values[0]),
+		'Recovered': str(df['Recovered'].values[0]),
+		'Deceased': str(df['Deceased'].values[0]),
+		'Tested': str(df['Tested'].values[0]),
+		'Active': str(df['Active'].values[0]),
+	}
+	return jsonify(state = data)
+
+
+
 @app.route('/')
 def index():
 	global df_nation
@@ -373,6 +391,7 @@ def index():
 	state_labels_full = df_state['State'].values.tolist()
 	state_confirmed_full = df_state['Confirmed'].values.tolist()
 	state_tested_full = df_state['Tested'].values.tolist()
+	state_deceased_full = df_state['Deceased'].values.tolist()
 
 	return render_template('index.html',
 
@@ -399,7 +418,7 @@ def index():
 						   state_labels = state_labels, state_confirmed = state_confirmed, state_recovered = state_recovered,
 						   state_active = state_active, state_tested = state_tested, state_deceased = state_deceased,
 						   state_labels_full = state_labels_full, state_confirmed_full = state_confirmed_full,
-						   state_tested_full = state_tested_full,
+						   state_tested_full = state_tested_full, state_deceased_full = state_deceased_full,
 
 
 						   )
