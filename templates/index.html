@@ -35,7 +35,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#aboutmodal">About</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Credits</a>
@@ -107,8 +107,8 @@
 	  </div>
 	  
 	  <div class="container-fluid">
-		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-lg-7 col-md-6">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+		  <div class="col-lg-6">
 		  	<select class="form-control" id="wselect">
 				  <option>Confirmed</option>
 				  <option>Recovered</option>
@@ -119,7 +119,7 @@
 				<div id="world_heat"></div>
 			</div>
 		  </div>
-		  <div class="col-lg-5 col-md-6">
+		  <div class="col-lg-6">
 
 		  	<br>
 
@@ -173,8 +173,8 @@
 	  </div>
 	  
 	  <div class="container-fluid">
-		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-md-4 col-lg-4">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+		  <div class="col-lg-5">
 
 		  	<div class="card npie">
 			  <div id="nation_pie"></div>
@@ -182,7 +182,7 @@
 			
 		  </div>
 
-		  <div class="col-md-8 col-lg-8">
+		  <div class="col-lg-7">
 
 			<div class="ntable">
 			   
@@ -235,12 +235,12 @@
 			
 
 	  <div class="container-fluid">
-		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-md-6 col-lg-6">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+		  <div class="col-lg-6">
 			<div class="card nheat" id="nheat">
 			</div>
 		  </div>
-		  <div class="col-md-6 col-lg-6">
+		  <div class="col-lg-6">
 
 			<br>
 
@@ -290,10 +290,12 @@
 		  </div>
 		</div>
 	  </div>
+
+	  <br>
 	  
 	  <div class="container-fluid">
-		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-md-6 col-lg-6">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+		  <div class="col-lg-6">
 			<div class="card cchart">
 				<ul class="inline-ul">
 					<li><p>Category</p></li>
@@ -312,19 +314,19 @@
 					</select></li>
 				</ul>
 				<div class="btn-group dchange" role="group" aria-label="Basic example">
-				  <button type="button" class="btn btn-secondary active">Beginning</button>
-				  <button type="button" class="btn btn-secondary">Last 60 Days</button>
-				  <button type="button" class="btn btn-secondary">Last 7 Days</button>
+				  <button type="button" class="btn btn-secondary active" id="c_beginning">Beginning</button>
+				  <button type="button" class="btn btn-secondary" id="c_sixty">Last 60 Days</button>
+				  <button type="button" class="btn btn-secondary" id="c_week">Last 7 Days</button>
 				</div>
 				<div id="categ_charts"></div>
 			</div>
 		  </div>
-		  <div class="col-md-6 col-lg-6">
+		  <div class="col-lg-6">
 			<div class="card cchart">
 				<div class="btn-group dchange" role="group" aria-label="Basic example">
-				  <button type="button" class="btn btn-secondary active">Beginning</button>
-				  <button type="button" class="btn btn-secondary">Last 60 Days</button>
-				  <button type="button" class="btn btn-secondary">Last 7 Days</button>
+				  <button type="button" class="btn btn-secondary active" id="cr_beginning">Beginning</button>
+				  <button type="button" class="btn btn-secondary" id="cr_sixty">Last 60 Days</button>
+				  <button type="button" class="btn btn-secondary" id="cr_week">Last 7 Days</button>
 				</div>
 			  <div id="categ_charts_right1"></div>
 			  <div id="categ_charts_right2"></div>
@@ -335,13 +337,13 @@
 
 
 	  <div class="container-fluid">
-		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-md-7 col-lg-7">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+		  <div class="col-lg-7">
 			<div class="card cchart">
 				<div id="top_state"></div>
 			</div>
 		  </div>
-		  <div class="col-md-5 col-lg-5">
+		  <div class="col-lg-5">
 			<div class="card cchart">
 			 	<div id="state_pie"></div>
 			</div>
@@ -351,13 +353,13 @@
 
 
 	  <div class="container-fluid">
-		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2">
-		  <div class="col-md-6 col-lg-6">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+		  <div class="col-lg-6">
 			<div class="card cchart">
 				<div id="state_test_cases"></div>
 			</div>
 		  </div>
-		  <div class="col-md-6 col-lg-6">
+		  <div class="col-lg-6">
 		  	<div class="card cchart">
 				<select class="form-control" id="sselect">
 			  		{% for sname in state_labels_full %}
@@ -374,6 +376,31 @@
 
 	  
     </div>
+
+
+    <!-- Modal -->
+	<div class="modal fade" id="aboutmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">About</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <p>A Flask based web app showing daily COVID-19 updates.</p>
+	        <p>Developer : <b>Rushabh Patel</b></p>
+	        <p>Mail 	: 	<i>rushabhp99@gmail.com</i></p>
+	        <p>Github 	: 	<i>rushabh71</i></p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
        
   <footer class="container-fluid">
 	<p>Developed by Rushabh Patel @2020</p>

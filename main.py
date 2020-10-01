@@ -138,7 +138,7 @@ def get_numbers():
 	total_deceased = [int(i.get('totaldeceased', None)) for i in data.get('cases_time_series', None)]
 	total_recovered = [int(i.get('totalrecovered', None)) for i in data.get('cases_time_series', None)]
 
-	offset = 41
+	offset = 40
 
 	daily_tested = [0 for i in range(offset)] + [toint(i.get('samplereportedtoday', None)) for i in
 												 data.get('tested', None)]

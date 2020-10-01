@@ -38,12 +38,13 @@ body {
 }
 
 .parent {
-  padding:5px;
+  padding:0px;
+  margin: 0px;
 }
 
 
 .wtable {
-  height: 550px;
+  height: 600px;
   overflow: auto;
   margin-top: 10px;
   margin-bottom: 10px;

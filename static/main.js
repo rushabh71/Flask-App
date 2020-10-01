@@ -4,6 +4,8 @@
 
      	var cat = 'Confirmed';
      	var type = 'Cumulative';
+     	var c = 0;
+     	var cr = 0;
 
      	//Current numbers
 
@@ -53,7 +55,7 @@
 		 $('#cselect').on('change', function() {
 		 	cat = $(this).val();
 		 	type = $('#tselect').val();
-			plotCategoryCharts(cat,type);
+			plotCategoryCharts(cat,type,c);
 		  });
 		});
 
@@ -61,7 +63,7 @@
 		 $('#tselect').on('change', function() {
 		 	cat = $('#cselect').val();
 		 	type = $(this).val();
-			plotCategoryCharts(cat,type);
+			plotCategoryCharts(cat,type,c);
 		  });
 		});
 
@@ -93,6 +95,56 @@
 			function(response){
 				plotStateChart(response.state);
 			});
+		 });
+
+
+		 $('#c_beginning').on('click', function() {
+		 	$( "#c_beginning" ).addClass( "active" );
+		 	$( "#c_sixty" ).removeClass( "active" );
+		 	$( "#c_week" ).removeClass( "active" );
+		 	plotCategoryCharts(cat,type,0);
+		 	c = 0;
+		 });
+
+		  $('#c_sixty').on('click', function() {
+		 	$( "#c_sixty" ).addClass( "active" );
+		 	$( "#c_beginning" ).removeClass( "active" );
+		 	$( "#c_week" ).removeClass( "active" );
+		 	plotCategoryCharts(cat,type,1);
+		 	c = 1;
+		 });
+
+		  $('#c_week').on('click', function() {
+		 	$( "#c_week" ).addClass( "active" );
+		 	$( "#c_sixty" ).removeClass( "active" );
+		 	$( "#c_beginning" ).removeClass( "active" );
+		 	plotCategoryCharts(cat,type,2);
+		 	c = 2;
+		 });
+
+
+		  $('#cr_beginning').on('click', function() {
+		 	$( "#cr_beginning" ).addClass( "active" );
+		 	$( "#cr_sixty" ).removeClass( "active" );
+		 	$( "#cr_week" ).removeClass( "active" );
+		 	plotCategoryCharts2(0);
+		 	cr = 0;
+		 });
+
+		  $('#cr_sixty').on('click', function() {
+		 	$( "#cr_sixty" ).addClass( "active" );
+		 	$( "#cr_beginning" ).removeClass( "active" );
+		 	$( "#cr_week" ).removeClass( "active" );
+		 	plotCategoryCharts2(1);
+		 	cr = 1;
+		 });
+
+		  $('#cr_week').on('click', function() {
+		 	$( "#cr_week" ).addClass( "active" );
+		 	$( "#cr_sixty" ).removeClass( "active" );
+		 	$( "#cr_beginning" ).removeClass( "active" );
+		 	plotCategoryCharts2(2);
+		 	cr = 2;
 		 });
 
    }
@@ -308,10 +360,31 @@ function plotTopStateChart(){
 }
 
 
-function plotCategoryCharts2(){
+function plotCategoryCharts2(dur=0){
 
-	var x = dates;
-	var y = positivity_rate;
+	var x;
+	var y;
+	var dtick;
+
+	switch(dur){
+		case 0:
+			x = dates;
+			y = positivity_rate;
+			dtick = 30;
+		break;
+
+		case 1:
+			x = dates.slice(-60,);
+			y = (positivity_rate).slice(-60,);
+			dtick = 10;
+		break;
+
+		case 2:
+			x = dates.slice(-7,);
+			y = (positivity_rate).slice(-7,);
+			dtick = 1;
+		break;
+	}
 
 	var data = [{
 	 	  x: x,
@@ -335,7 +408,7 @@ function plotCategoryCharts2(){
 	  		linecolor: 'lightgray',
 	  		gridcolor: 'lightgray', 
 	  		tick0: '30/01/2020', 
-	  		dtick: 30, 
+	  		dtick: dtick, 
 	  		tickangle: -45, 
 	  		automargin: true
 		  },
@@ -356,15 +429,41 @@ function plotCategoryCharts2(){
 
 	//cases -pm vs test -pm
 
+	var casespm
+	var testspm
+
+	switch(dur){
+		case 0:
+			x = dates;
+			casespm = cases_pm;
+			testspm = tests_pm;
+			dtick = 30;
+		break;
+
+		case 1:
+			x = dates.slice(-60,);
+			casespm = (cases_pm).slice(-60,);
+			testspm = (tests_pm).slice(-60,);
+			dtick = 10;
+		break;
+
+		case 2:
+			x = dates.slice(-7,);
+			casespm = (cases_pm).slice(-7,);
+			testspm = (tests_pm).slice(-7,);
+			dtick = 1;
+		break;
+	}
+
 	var data = [{
 	 	  x: x,
-	 	  y: cases_pm,
+	 	  y: casespm,
 	 	  name: 'Cases PM',
 		  type: 'scatter',
 	}, {
 
 		  x: x,
-		  y: tests_pm,
+		  y: testspm,
 		  name: 'Tests PM',
 		  type: 'scatter',
 	}];
@@ -385,7 +484,7 @@ function plotCategoryCharts2(){
 	  		linecolor: 'lightgray',
 	  		gridcolor: 'lightgray', 
 	  		tick0: '30/01/2020', 
-	  		dtick: 30, 
+	  		dtick: dtick, 
 	  		tickangle: -45, 
 	  		automargin: true
 		  },
@@ -407,7 +506,7 @@ function plotCategoryCharts2(){
 
 
 
-function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative'){
+function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative', dur = 0){
 
 	y_data = {
 		'Cumulative': {
@@ -439,12 +538,33 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative'){
 			'Log'		 : 'Log of cases'
 	}
 
+	var x;
+	var y;
+	var dtick;
 
-	var x = dates;
+	switch(dur){
+		case 0:
+			x = dates;
+			y = y_data[type][categ];
+			dtick = 30;
+		break;
+
+		case 1:
+			x = dates.slice(-60,);
+			y = (y_data[type][categ]).slice(-60,);
+			dtick = 10;
+		break;
+
+		case 2:
+			x = dates.slice(-7,);
+			y = (y_data[type][categ]).slice(-7,);
+			dtick = 1;
+		break;
+	}
 
 	var data = [{
 	 	  x: x,
-	 	  y: y_data[type][categ],
+	 	  y: y,
 		  type: 'scatter',
 		  fill: 'tonexty',
 	}];
@@ -465,7 +585,8 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative'){
       		linecolor: 'lightgray',
       		gridcolor: 'lightgray', 
       		tick0: '30/01/2020', 
-      		dtick: 30, 
+      		dtick: dtick, 
+      		tickVals: 
       		tickangle: -45, 
       		automargin: true
 		  },
@@ -484,19 +605,22 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative'){
 	Plotly.newPlot('categ_charts', data, layout, config);
 }
 
+function formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+}
 
  function getCurrentNumbers(){
- 	document.getElementById("cum_confirmed").innerHTML = numbers['cum_numbers'][0];
-	document.getElementById("cum_recovered").innerHTML = numbers['cum_numbers'][1];
-	document.getElementById("cum_deceased").innerHTML = numbers['cum_numbers'][2];
-	document.getElementById("cum_active").innerHTML = numbers['cum_numbers'][3];
-	document.getElementById("cum_tested").innerHTML = numbers['cum_numbers'][4];
+ 	document.getElementById("cum_confirmed").innerHTML = formatNumber(numbers['cum_numbers'][0]);
+	document.getElementById("cum_recovered").innerHTML = formatNumber(numbers['cum_numbers'][1]);
+	document.getElementById("cum_deceased").innerHTML = formatNumber(numbers['cum_numbers'][2]);
+	document.getElementById("cum_active").innerHTML = formatNumber(numbers['cum_numbers'][3]);
+	document.getElementById("cum_tested").innerHTML = formatNumber(numbers['cum_numbers'][4]);
 
-	document.getElementById("daily_confirmed").innerHTML = numbers['daily_numbers'][0];
-	document.getElementById("daily_recovered").innerHTML = numbers['daily_numbers'][1];
-	document.getElementById("daily_deceased").innerHTML = numbers['daily_numbers'][2];
-	document.getElementById("daily_active").innerHTML = numbers['daily_numbers'][3];
-	document.getElementById("daily_tested").innerHTML = numbers['daily_numbers'][4];
+	document.getElementById("daily_confirmed").innerHTML = formatNumber(numbers['daily_numbers'][0]);
+	document.getElementById("daily_recovered").innerHTML = formatNumber(numbers['daily_numbers'][1]);
+	document.getElementById("daily_deceased").innerHTML = formatNumber(numbers['daily_numbers'][2]);
+	document.getElementById("daily_active").innerHTML = formatNumber(numbers['daily_numbers'][3]);
+	document.getElementById("daily_tested").innerHTML = formatNumber(numbers['daily_numbers'][4]);
 }
 
 
