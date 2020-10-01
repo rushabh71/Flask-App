@@ -176,7 +176,7 @@
 	  showlegend: false,
 	  xaxis: {
 	  		title: {
-	  			text: 'Categories',
+	  			text: 'Category',
 	  		},
 	  		linecolor: 'lightgray',
 	  		gridcolor: 'lightgray', 
@@ -322,7 +322,7 @@ function plotTopStateChart(){
 	  plot_bgcolor: 'rgba(0,0,0,0)',
 	  xaxis: {
 	  		title: {
-	  			text: 'States',
+	  			text: 'State',
 	  		},
 	  		linecolor: 'lightgray',
 	  		gridcolor: 'lightgray', 
@@ -386,11 +386,27 @@ function plotCategoryCharts2(dur=0){
 		break;
 	}
 
-	var data = [{
-	 	  x: x,
+	var trace1 = {
+ 		  x: x,
 	 	  y: y,
 		  type: 'scatter',
-	}];
+		  name: 'Positivity Rate'
+	};
+
+	var trace2 = {
+	 	  x: [x[x.length-1]],
+	 	  y: [y[y.length-1]],
+		  type: 'scatter',
+		  mode: 'markers+text',
+		  text: [y[y.length-1]],
+		  marker: {
+		  	color: 'blue',
+		  },
+		  textposition: "top center",
+		  hoverinfo: 'skip',
+	};
+
+	var data = [trace1,trace2];
 
 	var layout = {
 	  title: { 
@@ -402,13 +418,12 @@ function plotCategoryCharts2(dur=0){
 	  plot_bgcolor: 'rgba(0,0,0,0)',
 	  xaxis: {
 	  		title: {
-	  			text: 'Dates',
+	  			text: 'Date',
 	  		},
-	  		tickmode: 'linear',
+	  		tickmode: 'array',
 	  		linecolor: 'lightgray',
 	  		gridcolor: 'lightgray', 
-	  		tick0: '30/01/2020', 
-	  		dtick: dtick, 
+	  		tickvals: custom_slice(x, dtick),
 	  		tickangle: -45, 
 	  		automargin: true
 		  },
@@ -419,6 +434,7 @@ function plotCategoryCharts2(dur=0){
 		    linecolor: 'lightgray',
 		    gridcolor: 'lightgray'
 		  },
+	  showlegend: false,
 
 	};
 
@@ -455,18 +471,52 @@ function plotCategoryCharts2(dur=0){
 		break;
 	}
 
-	var data = [{
+	var trace1 = {
 	 	  x: x,
 	 	  y: casespm,
 	 	  name: 'Cases PM',
 		  type: 'scatter',
-	}, {
+		  name: 'Cases PM',
+	};
 
+
+	var trace2 = {
 		  x: x,
 		  y: testspm,
 		  name: 'Tests PM',
 		  type: 'scatter',
-	}];
+		  name: 'Tests PM',
+	};
+
+
+	var trace3 = {
+	 	  x: [x[x.length-1]],
+	 	  y: [casespm[casespm.length-1]],
+		  type: 'scatter',
+		  mode: 'markers+text',
+		  text: [formatNumber(casespm[casespm.length-1])],
+		  marker: {
+		  	color: 'blue',
+		  },
+		  textposition: "top center",
+		  hoverinfo: 'skip',
+	};
+
+
+	var trace4 = {
+	 	  x: [x[x.length-1]],
+	 	  y: [testspm[testspm.length-1]],
+		  type: 'scatter',
+		  mode: 'markers+text',
+		  text: [formatNumber(testspm[testspm.length-1])],
+		  marker: {
+		  	color: 'orange',
+		  },
+		  textposition: "top center",
+		  hoverinfo: 'skip',
+	};
+
+	var data = [trace1, trace2, trace3, trace4];
 
 	var layout = {
 	  title: { 
@@ -478,13 +528,12 @@ function plotCategoryCharts2(dur=0){
 	  plot_bgcolor: 'rgba(0,0,0,0)',
 	  xaxis: {
 	  		title: {
-	  			text: 'Dates',
+	  			text: 'Date',
 	  		},
-	  		tickmode: 'linear',
+	  		tickmode: 'array',
 	  		linecolor: 'lightgray',
 	  		gridcolor: 'lightgray', 
-	  		tick0: '30/01/2020', 
-	  		dtick: dtick, 
+	  		tickvals: custom_slice(x,dtick),
 	  		tickangle: -45, 
 	  		automargin: true
 		  },
@@ -495,6 +544,7 @@ function plotCategoryCharts2(dur=0){
 		    linecolor: 'lightgray',
 		    gridcolor: 'lightgray'
 		  },
+	  showlegend: false,
 
 	};
 
@@ -562,12 +612,29 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative', dur = 0){
 		break;
 	}
 
-	var data = [{
+
+	var trace1 = {
 	 	  x: x,
 	 	  y: y,
 		  type: 'scatter',
 		  fill: 'tonexty',
-	}];
+		  name: 'Confirmed',
+	};
+
+	var trace2 = {
+	 	  x: [x[x.length-1]],
+	 	  y: [y[y.length-1]],
+		  type: 'scatter',
+		  mode: 'markers+text',
+		  text: [formatNumber(y[y.length-1])],
+		  marker: {
+		  	color: 'blue',
+		  },
+		  textposition: "top center",
+		  hoverinfo: 'skip',
+	};
+
+	var data = [trace1, trace2];
 
 	var layout = {
 	  title: { 
@@ -579,29 +646,38 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative', dur = 0){
       plot_bgcolor: 'rgba(0,0,0,0)',
       xaxis: {
       		title: {
-      			text: 'Dates',
+      			text: 'Date',
       		},
-      		tickmode: 'linear',
+      		tickmode: 'array',
       		linecolor: 'lightgray',
       		gridcolor: 'lightgray', 
-      		tick0: '30/01/2020', 
-      		dtick: dtick, 
+      		tickvals: custom_slice(x, dtick),
       		tickangle: -45, 
-      		automargin: true
+      		automargin: true,
 		  },
 	  yaxis: {
 	  		title: {
       			text: y_label[type],
       		},
 		    linecolor: 'lightgray',
-		    gridcolor: 'lightgray'
+		    gridcolor: 'lightgray',
 		  },
-
+	  showlegend: false
 	};
 
 	var config = {responsive: true}
 
 	Plotly.newPlot('categ_charts', data, layout, config);
+}
+
+function custom_slice(array, step = 1){
+	arr = [];
+	for(var i=0; i<array.length; i++){
+		if(i%step==0){
+			arr.push(array[i]);
+		}
+	}
+	return arr;
 }
 
 function formatNumber(num) {

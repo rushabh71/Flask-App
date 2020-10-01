@@ -1,26 +1,13 @@
 import json
-import os.path
 import re
 import urllib.request
 from datetime import date, datetime, timedelta
-from flask_paginate import Pagination, get_page_args, get_page_parameter
-import dash
-import dash_bootstrap_components as dbc
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_table
 import numpy as np
-from flask import Markup
-from plotly.offline import plot
 import pandas as pd
 import plotly
-import plotly.express as px
-import plotly.graph_objects as go
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, jsonify
-from flask import Markup
-from flask import session
 from numpy import inf
 
 world_df = None
