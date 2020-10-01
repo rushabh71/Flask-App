@@ -586,7 +586,6 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative', dur = 0){
       		gridcolor: 'lightgray', 
       		tick0: '30/01/2020', 
       		dtick: dtick, 
-      		tickVals: 
       		tickangle: -45, 
       		automargin: true
 		  },
