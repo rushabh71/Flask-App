@@ -27,13 +27,64 @@ total_deceased = []
 total_active = []
 total_tested = []
 
+countries = []
 dates = []
 end_date = None
 
 app = Flask(__name__)
 
+def prepare_world_timeseries():
+
+	global countries
+	object = dict()
+
+	world_df_time_c = pd.read_csv(
+		'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv',
+		error_bad_lines=False)
+	world_df_time_c = world_df_time_c.groupby('Country/Region').sum()
+	world_df_time_c = world_df_time_c.reset_index()
+	world_dates = pd.to_datetime(world_df_time_c.columns[3:]).strftime('%d/%m/%Y').tolist()
+
+	world_df_time_d = pd.read_csv(
+		'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv',
+		error_bad_lines=False)
+	world_df_time_d = world_df_time_d.groupby('Country/Region').sum()
+	world_df_time_d = world_df_time_d.reset_index()
+
+	world_df_time_r = pd.read_csv(
+		'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv',
+		error_bad_lines=False)
+	world_df_time_r = world_df_time_r.groupby('Country/Region').sum()
+	world_df_time_r = world_df_time_r.reset_index()
+
+	for c in countries:
+		world_confirmed = world_df_time_c[world_df_time_c['Country/Region'] == c].values[0][3:].tolist()
+		world_deceased = world_df_time_d[world_df_time_d['Country/Region'] == c].values[0][3:].tolist()
+		world_recovered = world_df_time_r[world_df_time_r['Country/Region'] == c].values[0][3:].tolist()
+
+		world_mortality = []
+
+		for i,j in zip(world_deceased, world_confirmed):
+			if(j!=0):
+				world_mortality.append(i/j)
+			else:
+				world_mortality.append(0)
+
+
+		object[c] = {'Confirmed' : world_confirmed,
+					 'Deceased' : world_deceased,
+					 'Recovered' : world_recovered,
+					 'Mortality' : world_mortality}
+
+	object['Dates'] = world_dates
+
+	return json.dumps(object, cls=plotly.utils.PlotlyJSONEncoder)
+
+
 def prepare_world_data():
 	global world_df
+	global countries
+
 	data_date = (date.today() - timedelta(days=2)).strftime('%m-%d-%Y')
 	world_df = pd.read_csv(
 		'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv'.format(
@@ -41,6 +92,9 @@ def prepare_world_data():
 	world_df = world_df[['Country_Region', 'Confirmed', 'Deaths', 'Recovered', 'Active']]
 	world_df = world_df.groupby('Country_Region').sum()
 	world_df = world_df.reset_index()
+	world_df = world_df.sort_values(by='Confirmed', ascending=False)
+
+	countries = world_df['Country_Region'].values[0:10].tolist()
 
 def world_heatmap():
 	prepare_world_data()
@@ -290,6 +344,25 @@ def getStateData():
 	return jsonify(state = data)
 
 
+def exponenial_func_two(x, a = 1/np.sqrt(2), b = np.sqrt(2)):
+	return a * (b**x)
+
+
+def exponenial_func_four(x, a = 1/(2**(1/4)), b = 2**(1/4)):
+	return a * (b**x)
+
+
+def exponenial_func_ten(x, a = 1/(2**(1/10)), b = 2**(1/10)):
+	return a * (b**x)
+
+
+def exponenial_func_seven(x, a = 1/(2**(1/7)), b = 2**(1/7)):
+	return a * (b**x)
+
+
+def exponenial_func_twelve(x, a = 1/(2**(1/12)), b = 2**(1/12)):
+	return a * (b**x)
+
 
 @app.route('/')
 def index():
@@ -298,6 +371,8 @@ def index():
 
 	world_heat = world_heatmap()
 	numbers = get_numbers()
+
+	world_df_time = prepare_world_timeseries()
 
 	dates.reverse()
 	df_nation = df_nation[dates]
@@ -380,6 +455,54 @@ def index():
 	state_tested_full = df_state['Tested'].values.tolist()
 	state_deceased_full = df_state['Deceased'].values.tolist()
 
+	days = int((datetime.strptime(end_date,'%d/%m/%Y') -
+									  datetime.strptime('22/01/2020','%d/%m/%Y')).days)
+
+	world_trend_x = list(range(1, days + 1))
+
+	max_confirmed = int(json.loads(world_df_time)[countries[0]]['Confirmed'][-1]) * 1.5
+
+	#2 day variables
+
+	x_two = np.array(list(range(1, days + 10, 1)))
+	y_two = exponenial_func_two(x_two)
+	y_two = (y_two[y_two<max_confirmed]).tolist()
+	x_two = [x_two[i] for i in range(0,len(y_two))]
+
+	#4 day variables
+
+	x_four = np.array(list(range(1, days + 10, 1)))
+	y_four = exponenial_func_four(x_four)
+	y_four = (y_four[y_four<max_confirmed]).tolist()
+	x_four = [x_four[i] for i in range(0,len(y_four))]
+
+
+	#10 day variables
+
+	x_ten = np.array(list(range(1, days + 10, 1)))
+	y_ten = exponenial_func_ten(x_ten)
+	y_ten = (y_ten[y_ten<max_confirmed]).tolist()
+	x_ten = [x_ten[i] for i in range(0,len(y_ten))]
+
+
+	#7 day variables
+
+	x_seven = np.array(list(range(1, days + 10, 1)))
+	y_seven = exponenial_func_seven(x_seven)
+	y_seven = (y_seven[y_seven<max_confirmed]).tolist()
+	x_seven = [x_seven[i] for i in range(0,len(y_seven))]
+
+
+	#12 day variables
+
+	x_twelve = np.array(list(range(1, days + 10, 1)))
+	y_twelve = exponenial_func_twelve(x_twelve)
+	y_twelve = (y_twelve[y_twelve<max_confirmed]).tolist()
+	x_twelve = [x_twelve[i] for i in range(0,len(y_twelve))]
+
+	mortality_rate = np.round(np.array(json.loads(world_df_time)['India']['Mortality']) * 100, 2).tolist()
+
+
 	return render_template('index.html',
 
 						   world_heat=world_heat, numbers = numbers, world_cols = world_df.columns.values,
@@ -406,6 +529,12 @@ def index():
 						   state_active = state_active, state_tested = state_tested, state_deceased = state_deceased,
 						   state_labels_full = state_labels_full, state_confirmed_full = state_confirmed_full,
 						   state_tested_full = state_tested_full, state_deceased_full = state_deceased_full,
+
+						   countries = countries, world_df_time = world_df_time, world_trend_x = world_trend_x,
+
+						   x_two = x_two[-1], y_two = y_two[-1], x_four = x_four[-1], y_four = y_four[-1],
+						   x_ten = x_ten[-1], y_ten = y_ten[-1], x_seven = x_seven[-1], y_seven = y_seven[-1],
+						   x_twelve = x_twelve[-1], y_twelve = y_twelve[-1], mortality_rate = mortality_rate,
 
 
 						   )

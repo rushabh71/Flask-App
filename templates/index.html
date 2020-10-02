@@ -19,6 +19,12 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 	<script type="text/javascript" src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 	<script type = "text/javascript" 
+         src = "{{ url_for('static', filename = 'helper.js') }}" ></script>
+	<script type = "text/javascript" 
+         src = "{{ url_for('static', filename = 'functions.js') }}" ></script>
+    <script type = "text/javascript" 
+         src = "{{ url_for('static', filename = 'functions2.js') }}" ></script>
+	<script type = "text/javascript" 
          src = "{{ url_for('static', filename = 'main.js') }}" ></script>
 	
 	<title>India Covid Cases</title>
@@ -171,6 +177,47 @@
 		  </div>
 		</div>
 	  </div>
+
+
+	  <div class="container-fluid">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+		  <div class="col-lg-6">
+			<div class="card cchart">
+				<div id="world_confirmed"></div>
+			</div>
+		  </div>
+		  <div class="col-lg-6">
+		  	<div class="card cchart">
+				<div id="world_deceased"></div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
+	  <div class="container-fluid">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+		  <div class="col-lg-6">
+			<div class="card cchart">
+				<div id="world_recovered"></div>
+			</div>
+		  </div>
+		  <div class="col-lg-6">
+		  	<div class="card cchart">
+				<div id="world_mortality"></div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
+	  <div class="container-fluid" style="margin: 0 auto; max-width: 992px;">
+		<div class="card cchart">
+			<div id="world_trend"></div>
+		</div>
+	  </div>
+
+	  <br>
+	  <br>
+
 	  
 	  <div class="container-fluid">
 		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
@@ -378,7 +425,7 @@
     </div>
 
 
-    <!-- Modal -->
+    <!-- About Modal -->
 	<div class="modal fade" id="aboutmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">
@@ -409,6 +456,9 @@
 </body>
 
  <script type="text/javascript">
+
+ 		/* Storing data received from requests in variables and 
+ 		   initializing new variables */
 
 		var numbers ={{ numbers | safe }}
 		var world_heat = {{ world_heat | safe }}
@@ -444,7 +494,25 @@
 		var state_confirmed_full = {{ state_confirmed_full | safe }}
 		var state_tested_full = {{ state_tested_full | safe }}
 		var state_deceased_full = {{ state_deceased_full | safe }}
+		var world_df_time = {{ world_df_time | safe }}
+		var countries = {{ countries | safe }}
+		var x_two = {{ x_two }}
+		var y_two = {{ y_two }}
+		var x_four = {{ x_four }}
+		var y_four = {{ y_four }}
+		var x_ten = {{ x_ten }}
+		var y_ten = {{ y_ten }}
+		var x_seven = {{ x_seven }}
+		var y_seven = {{ y_seven }}
+		var x_twelve = {{ x_twelve }}
+		var y_twelve = {{ y_twelve }}
+		var world_trend_x = {{ world_trend_x | safe }}
+		var mortality_rate = {{ mortality_rate | safe }}
 		var end_date = {{ end_date }}
+		var cat = 'Confirmed';
+	 	var type = 'Cumulative';
+	 	var c = 0; 		//Default date range is 'Beginning' for category chart	
+	 	var cr = 0;		//Default date range is 'Beginning' for category chart-right
 
 </script>
 
