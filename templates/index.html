@@ -32,7 +32,7 @@
 <body>
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">INDIA CORONA CASES&nbsp&nbsp<img  class='nimg' src='https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/383px-Flag_of_India.svg.png' width="30", height="20"></a>
+      <a class="navbar-brand" href="#">INDIA COVID-19 DASHBOARD&nbsp&nbsp<img  class='nimg' src='https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/383px-Flag_of_India.svg.png' width="30", height="20"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -43,7 +43,7 @@
             <a class="nav-link" href="#" data-toggle="modal" data-target="#aboutmodal">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Credits</a>
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#creditmodal">Credits</a>
           </li>
         </ul>
       </div>
@@ -447,6 +447,27 @@
 	  </div>
 	</div>
 
+	 <!-- Credits Modal -->
+	 <div class="modal fade" id="creditmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalCenterTitle">Credits</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<a href="https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data">JHU CSSE COVID-19 Dataset</a>
+	      	<br>
+	      	<a href="https://api.covid19india.org/">COVID19-India API</a>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
        
   <footer class="container-fluid">
 	<p>Developed by Rushabh Patel @2020</p>

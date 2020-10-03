@@ -142,6 +142,7 @@ function plotWorldConfirmed(){
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
+      hovermode: 'x unified',
       xaxis: {
       		title: {
       			text: 'Date',
@@ -195,6 +196,7 @@ function plotWorldDeceased(){
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
+      hovermode: 'x unified',
       xaxis: {
       		title: {
       			text: 'Date',
@@ -248,6 +250,7 @@ function plotWorldRecovered(){
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
+      hovermode: 'x unified',
       xaxis: {
       		title: {
       			text: 'Date',
@@ -301,6 +304,7 @@ function plotWorldMortality(){
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
+      hovermode: 'x unified',
       xaxis: {
       		title: {
       			text: 'Date',
@@ -441,9 +445,10 @@ function plotWorldTrend(){
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
+      hovermode: 'x unified',
       xaxis: {
       		title: {
-      			text: 'Date',
+      			text: 'No. of Days Since First Case',
       		},
       		tickmode: 'array',
       		linecolor: 'lightgray',

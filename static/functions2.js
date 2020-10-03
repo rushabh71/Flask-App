@@ -87,6 +87,7 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative', dur = 0){
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
+      hovermode: 'x unified',
       xaxis: {
       		title: {
       			text: 'Date',
@@ -166,7 +167,7 @@ function plotCategoryCharts2(dur=0){
 		  mode: 'markers+text',
 		  text: [pos[pos.length-1]],
 		  marker: {
-		  	color: 'orange',
+		  	color: 'blue',
 		  },
 		  textposition: "top center",
 		  hoverinfo: 'skip',
@@ -179,7 +180,7 @@ function plotCategoryCharts2(dur=0){
 		  mode: 'markers+text',
 		  text: [mor[mor.length-1]],
 		  marker: {
-		  	color: 'blue',
+		  	color: 'orange',
 		  },
 		  textposition: "top center",
 		  hoverinfo: 'skip',
@@ -196,6 +197,7 @@ function plotCategoryCharts2(dur=0){
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
 	  plot_bgcolor: 'rgba(0,0,0,0)',
+	  hovermode: 'x unified',
 	  xaxis: {
 	  		title: {
 	  			text: 'Date',
@@ -306,6 +308,7 @@ function plotCategoryCharts2(dur=0){
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
 	  plot_bgcolor: 'rgba(0,0,0,0)',
+	  hovermode: 'x unified',
 	  xaxis: {
 	  		title: {
 	  			text: 'Date',
@@ -378,6 +381,7 @@ function plotTopStateChart(){
 		},
 	  paper_bgcolor: 'rgba(0,0,0,0)',
 	  plot_bgcolor: 'rgba(0,0,0,0)',
+	  hovermode: 'x unified',
 	  xaxis: {
 	  		title: {
 	  			text: 'State',
@@ -521,6 +525,7 @@ function plotStateChart(state){
 		y: 0.92
 	    },
 	  showlegend: false,
+	  hovermode: 'x unified',
 	  xaxis: {
 	  		title: {
 	  			text: 'Category',
