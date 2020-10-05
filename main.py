@@ -359,7 +359,7 @@ def getDistrictData():
 		}
 		return jsonify(district=data)
 
-	df = df_district[df_district['index']==dname]
+	df = df_district[df_district['District']==dname]
 
 	data = {
 		'Confirmed' : str(df['Confirmed'].values[0]),
@@ -412,14 +412,14 @@ def prepare_district_data(scode):
 		district_dict[district] = data[scode]['districts'][district]['total']
 
 	df_district = pd.DataFrame(district_dict).T
-	df_district = df_district.rename(columns={'confirmed': 'Confirmed', 'deceased': 'Deceased', 'recovered': 'Recovered', 'tested': 'Tested'})
+	df_district = df_district.reset_index()
+	df_district = df_district.rename(columns={'index': 'District', 'confirmed': 'Confirmed', 'deceased': 'Deceased', 'recovered': 'Recovered', 'tested': 'Tested'})
 	df_district['Active'] = df_district['Confirmed'] - df_district['Recovered'] - df_district['Deceased']
 	try:
 		df_district = df_district.drop(['other'], axis=1)
 	except:
 		pass
 	df_district = df_district.fillna(0)
-	df_district = df_district.reset_index()
 
 
 def get_key(val, d):
@@ -638,7 +638,7 @@ def index():
 						   state_tested_avg=np.mean(df_state['Tested']),
 
 						   district_cols = district_cols, district_rows = district_rows,
-						   districts = df_district['index'].values.tolist(), district_deceased_avg = np.mean(df_district['Deceased']),
+						   districts = df_district['District'].values.tolist(), district_deceased_avg = np.mean(df_district['Deceased']),
 						   district_active_avg=np.mean(df_district['Active']), district_recovered_avg = np.mean(df_district['Recovered']),
 						   district_tested_avg=np.mean(df_district['Tested']), district_confirmed_avg = np.mean(df_district['Confirmed'])
 

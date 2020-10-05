@@ -35,6 +35,14 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative', dur = 0){
 	var y;
 	var dtick;
 
+	var color = {
+		'Confirmed' : '#5891e0',
+		'Recovered' : '#61e655',
+		'Deceased'	: 'ff7363',
+		'Active'	: '#e6ca30',
+		'Tested'	: '#e04ac0'
+	}
+
 	switch(dur){
 		case 0:
 			x = dates;
@@ -61,6 +69,10 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative', dur = 0){
 	 	  y: y,
 		  type: 'scatter',
 		  fill: 'tonexty',
+		  fillcolor: color[categ],
+		  line: {
+		  	color: 'gray',
+		  },
 		  name: 'Confirmed',
 	};
 
@@ -71,7 +83,7 @@ function plotCategoryCharts(categ = 'Confirmed', type = 'Cumulative', dur = 0){
 		  mode: 'markers+text',
 		  text: [formatNumber(y[y.length-1])],
 		  marker: {
-		  	color: 'blue',
+		  	color: 'gray',
 		  },
 		  textposition: "top center",
 		  hoverinfo: 'skip',
@@ -558,7 +570,7 @@ function plotStateChart(state){
 	    color: 'rgb(128, 0, 128)',
 	    width: 3
 	  },
-	  name: 'Average',
+	  name: 'State Average',
 	  marker: {
 	    color: 'rgb(128, 0, 128)',
 	    size: 8
@@ -629,7 +641,7 @@ function plotDistrictChart(district){
 	    color: 'rgb(128, 0, 128)',
 	    width: 3
 	  },
-	  name: 'Average',
+	  name: 'District Average',
 	  marker: {
 	    color: 'rgb(128, 0, 128)',
 	    size: 8

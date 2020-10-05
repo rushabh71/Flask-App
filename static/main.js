@@ -103,6 +103,18 @@ function registerListeners(){
 		function(response){
 			$("#dtable").DataTable().clear().destroy();
 			document.getElementById('dselect').innerHTML = '';
+			document.getElementById('dist_table_head').innerHTML = '';
+
+			var cols = response.district.district_cols;
+			var row_element = document.createElement("tr");
+			for(var i=0; i<cols.length; i++){
+				var val_element = document.createElement("th");
+				val_element.setAttribute('scope', 'col');
+				val_element.setAttribute('class', 'common-val');
+				val_element.innerHTML = cols[i];
+			    row_element.appendChild(val_element);
+			}
+			document.getElementById('dist_table_head').appendChild(row_element);
 
 			var rows = response.district.district_rows;
 			for(var row=0; row<rows.length; row++){
@@ -111,7 +123,7 @@ function registerListeners(){
 					if(val==0){
 						var val_element = document.createElement("td");
 						val_element.setAttribute('class', 'f-col-val');
-						val_element.innerHTML = '<b>'+rows[row][val]+'</b>';
+						val_element.innerHTML = '<b>'+ rows[row][val] +'</b>';
 						row_element.appendChild(val_element);
 
 						var option = document.createElement("option");
@@ -119,7 +131,7 @@ function registerListeners(){
 						document.getElementById('dselect').appendChild(option);
 					} else {
 						var val_element = document.createElement("td");
-						val_element.innerHTML = rows[row][val];
+						val_element.innerHTML = parseInt(rows[row][val]);
 						row_element.appendChild(val_element);
 					}
 				}

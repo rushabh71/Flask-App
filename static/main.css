@@ -142,6 +142,12 @@ th {
   z-index: 2;
 }
 
+.f-col-val {
+  position: sticky; 
+  left: 0;
+  background-color: #f0f0f0;
+}
+
 .inline-ul {
   list-style: none;
   margin-top: 20px;
