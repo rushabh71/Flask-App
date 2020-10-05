@@ -10,6 +10,7 @@ function getCurrentNumbers(){
 	document.getElementById("daily_deceased").innerHTML = formatNumber(numbers['daily_numbers'][2]);
 	document.getElementById("daily_active").innerHTML = formatNumber(numbers['daily_numbers'][3]);
 	document.getElementById("daily_tested").innerHTML = formatNumber(numbers['daily_numbers'][4]);
+
 }
 
 
