@@ -80,6 +80,10 @@ body {
   overflow: auto;
 }
 
+footer {
+  margin-top: 20px;
+}
+
 footer p {
   background-color: gray;
   padding: 15px;

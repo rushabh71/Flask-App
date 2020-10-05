@@ -93,6 +93,7 @@ def prepare_world_data():
 	world_df = world_df[['Country_Region', 'Confirmed', 'Deaths', 'Recovered', 'Active']]
 	world_df = world_df.groupby('Country_Region').sum()
 	world_df = world_df.reset_index()
+	world_df['Active'] = world_df['Active'].astype(int)
 	world_df = world_df.sort_values(by='Confirmed', ascending=False)
 
 	countries = world_df['Country_Region'].values[0:10].tolist()
