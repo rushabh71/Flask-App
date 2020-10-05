@@ -49,6 +49,7 @@ body {
 
 .wtable {
   height: 600px;
+  min-height: 600px;
   overflow: auto;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -133,6 +134,7 @@ th {
 
 .stable {
   height: 650px;
+  min-height: 650px;
   overflow: auto;
 }
 
@@ -144,6 +146,7 @@ th {
 .common-val {
   position: sticky; 
   top: 0; 
+  left: 0;
   z-index: 2;
 }
 
