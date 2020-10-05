@@ -611,7 +611,7 @@ function plotStateChart(state){
 
 
 
-function plotDistrictChart(district){
+function plotDistrictChart(district = null){
 
  	formatValue = d3.format(".3s");
 
@@ -620,10 +620,38 @@ function plotDistrictChart(district){
  	var district_active_avg = district['district_active_avg'];
  	var district_deceased_avg = district['district_deceased_avg'];
 
+ 	if(district['Tested']!=null && district['Tested'] > 0){
+ 		var tested = formatValue(district['Tested']);
+ 	} else {
+ 		var tested = 0;
+ 	}
+ 	
+ 	if(district['Confirmed'] > 0){
+ 		var confirmed = formatValue(district['Confirmed']);
+ 	}else {
+ 		var confirmed = 0;
+ 	} 
+ 	if(district['Recovered'] > 0){
+ 		var recovered = formatValue(district['Recovered']);
+ 	}else {
+ 		var recovered = 0;
+ 	} 
+ 	if(district['Active'] > 0){
+ 		var active = formatValue(district['Active']);
+ 	}else {
+ 		var active = 0;
+ 	} 
+ 	if(district['Deceased'] > 0){
+ 		var deceased = formatValue(district['Deceased']);
+ 	}else {
+ 		var deceased = 0;
+ 	} 
+
+
  	var data = [{
  	  x: ['Confirmed','Recovered','Active','Deceased'],
  	  y: [district['Confirmed'],district['Recovered'],district['Active'],district['Deceased']],
- 	  text: [formatValue(district['Confirmed']),formatValue(district['Recovered']),formatValue(district['Active']),formatValue(district['Deceased'])],
+ 	  text: [confirmed, recovered, active, deceased],
  	  textposition: 'auto',
  	  hoverinfo:"x+y",
 	  marker: {
@@ -651,7 +679,7 @@ function plotDistrictChart(district){
 
 	var layout = {
 	  title: {
-	  	text: 'Total Samples Tested : ' + formatValue(district['Tested']),
+	  	text: 'Total Samples Tested : ' + tested,
 	  	x: 0.02,
 		y: 0.92
 	    },

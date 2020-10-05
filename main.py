@@ -366,14 +366,17 @@ def getDistrictData():
 		'Confirmed' : str(df['Confirmed'].values[0]),
 		'Recovered': str(df['Recovered'].values[0]),
 		'Deceased': str(df['Deceased'].values[0]),
-		'Tested': str(df['Tested'].values[0]),
 		'Active': str(df['Active'].values[0]),
 		'district_deceased_avg' : str(np.mean(df_district['Deceased'])),
 		'district_active_avg' : str(np.mean(df_district['Active'])),
 		'district_recovered_avg' : str(np.mean(df_district['Recovered'])),
-		'district_tested_avg' : str(np.mean(df_district['Tested'])),
 		'district_confirmed_avg' : str(np.mean(df_district['Confirmed']))
 	}
+
+	if('Tested' in df.columns):
+		data['Tested'] = str(df['Tested'].values[0])
+		data['district_tested_avg'] = str(np.mean(df_district['Tested']))
+
 	return jsonify(district = data)
 
 
@@ -421,6 +424,8 @@ def prepare_district_data(scode):
 	except:
 		pass
 	df_district = df_district.fillna(0)
+	for col in df_district.columns[1:]:
+		df_district[col] = df_district[col].astype(int)
 
 
 def get_key(val, d):
