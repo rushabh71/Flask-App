@@ -32,7 +32,7 @@
 
 <body>
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
       <a class="navbar-brand" href="#">INDIA COVID-19 DASHBOARD</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -242,7 +242,7 @@
 					       		 {% if(col!=nation_cols[0]) %}
 					    	   			<th scope="col" class="tcols">{{col}}</th>
 							        {% else %}
-								        <th scope="col" class="common-val">{{col}}</th>
+								        <th scope="col" class="common-val" style="position: sticky; left: 0; top: 0;">Categoty</th>
 							        {% endif %}
 					        {% endfor %}
 					     
