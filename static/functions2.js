@@ -368,6 +368,12 @@ function plotTopStateChart(){
 	 	  y: state_tested,
 	 	  name: 'Tested',
 	 	  yaxis: 'y2',
+	 	  marker: {
+	 	  	color: 'rgb(128, 0, 128)',
+	 	  },
+	 	  line: {
+	 	  	color: 'rgb(128, 0, 128)',
+	 	  },
 		  type: 'scatter',
 	}];
 
@@ -492,6 +498,31 @@ function plotStateTestCases(){
 		    linecolor: 'lightgray',
 		    gridcolor: 'lightgray'
 		  },
+	  shapes: [{
+	    type: 'line',
+	    x0: state_confirmed_avg,
+	    y0: 0,
+	    x1: state_confirmed_avg,
+	    yref: 'paper',
+	    y1: 1,
+	    line: {
+	      color: 'grey',
+	      width: 1.5,
+	      dash: 'dot'
+	    }
+	  }, {
+	    type: 'line',
+	    x0: 0,
+	    y0: state_tested_avg,
+	    x1: 1,
+	    xref: 'paper',
+	    y1: state_tested_avg,
+	    line: {
+	      color: 'grey',
+	      width: 1.5,
+	      dash: 'dot'
+	    }
+	  }]
 	};
 
 	var config = {responsive: true}
@@ -515,7 +546,24 @@ function plotStateChart(state){
 	  marker: {
    		color: ['blue', 'green', 'orange', 'gray'],
    	  },
+   	  showlegend: false,
 	  type: 'bar',
+	}, {
+	  x: ['Confirmed','Recovered','Active','Deceased'],
+ 	  y: [state_confirmed_avg,state_recovered_avg,state_active_avg,state_deceased_avg],
+ 	  text: [formatValue(state_confirmed_avg),formatValue(state_recovered_avg),formatValue(state_active_avg),formatValue(state_deceased_avg)],
+ 	  textposition: 'auto',
+ 	  hoverinfo:"x+y",
+ 	  line: {
+	    color: 'rgb(128, 0, 128)',
+	    width: 3
+	  },
+	  name: 'Average',
+	  marker: {
+	    color: 'rgb(128, 0, 128)',
+	    size: 8
+	  },
+	  type: 'scatter',
 	}];
 
 	var layout = {
@@ -524,7 +572,7 @@ function plotStateChart(state){
 	  	x: 0.02,
 		y: 0.92
 	    },
-	  showlegend: false,
+	  showlegend: true,
 	  hovermode: 'x unified',
 	  xaxis: {
 	  		title: {
@@ -546,6 +594,77 @@ function plotStateChart(state){
 	var config = {responsive: true}
 
 	Plotly.newPlot('state_chart', data, layout, config);
+
+}
+
+
+
+function plotDistrictChart(district){
+
+ 	formatValue = d3.format(".3s");
+
+ 	var district_confirmed_avg = district['district_confirmed_avg'];
+ 	var district_recovered_avg = district['district_recovered_avg'];
+ 	var district_active_avg = district['district_active_avg'];
+ 	var district_deceased_avg = district['district_deceased_avg'];
+
+ 	var data = [{
+ 	  x: ['Confirmed','Recovered','Active','Deceased'],
+ 	  y: [district['Confirmed'],district['Recovered'],district['Active'],district['Deceased']],
+ 	  text: [formatValue(district['Confirmed']),formatValue(district['Recovered']),formatValue(district['Active']),formatValue(district['Deceased'])],
+ 	  textposition: 'auto',
+ 	  hoverinfo:"x+y",
+	  marker: {
+   		color: ['blue', 'green', 'orange', 'gray'],
+   	  },
+   	  showlegend: false,
+	  type: 'bar',
+	}, {
+	  x: ['Confirmed','Recovered','Active','Deceased'],
+ 	  y: [district_confirmed_avg,district_recovered_avg,district_active_avg,district_deceased_avg],
+ 	  text: [formatValue(district_confirmed_avg),formatValue(district_recovered_avg),formatValue(district_active_avg),formatValue(district_deceased_avg)],
+ 	  textposition: 'auto',
+ 	  hoverinfo:"x+y",
+ 	  line: {
+	    color: 'rgb(128, 0, 128)',
+	    width: 3
+	  },
+	  name: 'Average',
+	  marker: {
+	    color: 'rgb(128, 0, 128)',
+	    size: 8
+	  },
+	  type: 'scatter',
+	}];
+
+	var layout = {
+	  title: {
+	  	text: 'Total Samples Tested : ' + formatValue(district['Tested']),
+	  	x: 0.02,
+		y: 0.92
+	    },
+	  showlegend: true,
+	  hovermode: 'x unified',
+	  xaxis: {
+	  		title: {
+	  			text: 'Category',
+	  		},
+	  		linecolor: 'lightgray',
+	  		gridcolor: 'lightgray', 
+		  },
+	  yaxis: {
+	  		title: {
+	  			text: 'No. of Cases',
+	  		},
+		    linecolor: 'lightgray',
+		    gridcolor: 'lightgray'
+		  },
+	  bargap: 0.5,
+	};
+
+	var config = {responsive: true}
+
+	Plotly.newPlot('district_chart', data, layout, config);
 
 }
 

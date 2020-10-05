@@ -13,6 +13,7 @@ from numpy import inf
 world_df = None
 df_nation = None
 df_state = None
+df_district = None
 state_names = None
 
 daily_confirmed = []
@@ -344,6 +345,38 @@ def getStateData():
 	return jsonify(state = data)
 
 
+@app.route('/district', methods=['POST'])
+def getDistrictData():
+	dname = request.form.get('district', None, type=str)
+
+	if(dname==None):
+		data = {
+			'Confirmed': str(0),
+			'Recovered': str(0),
+			'Deceased': str(0),
+			'Tested': str(0),
+			'Active': str(0),
+		}
+		return jsonify(district=data)
+
+	df = df_district[df_district['index']==dname]
+
+	data = {
+		'Confirmed' : str(df['Confirmed'].values[0]),
+		'Recovered': str(df['Recovered'].values[0]),
+		'Deceased': str(df['Deceased'].values[0]),
+		'Tested': str(df['Tested'].values[0]),
+		'Active': str(df['Active'].values[0]),
+		'district_deceased_avg' : str(np.mean(df_district['Deceased'])),
+		'district_active_avg' : str(np.mean(df_district['Active'])),
+		'district_recovered_avg' : str(np.mean(df_district['Recovered'])),
+		'district_tested_avg' : str(np.mean(df_district['Tested'])),
+		'district_confirmed_avg' : str(np.mean(df_district['Confirmed']))
+	}
+	return jsonify(district = data)
+
+
+
 def exponenial_func_two(x, a = 1/np.sqrt(2), b = np.sqrt(2)):
 	return a * (b**x)
 
@@ -362,6 +395,64 @@ def exponenial_func_seven(x, a = 1/(2**(1/7)), b = 2**(1/7)):
 
 def exponenial_func_twelve(x, a = 1/(2**(1/12)), b = 2**(1/12)):
 	return a * (b**x)
+
+
+def prepare_district_data(scode):
+	global df_district
+	global df_state
+
+	URL = 'https://api.covid19india.org/v4/data.json'
+
+	with urllib.request.urlopen(URL) as url:
+		data = json.loads(url.read().decode())
+
+	district_dict = dict()
+
+	for district in data[scode]['districts'].keys():
+		district_dict[district] = data[scode]['districts'][district]['total']
+
+	df_district = pd.DataFrame(district_dict).T
+	df_district = df_district.rename(columns={'confirmed': 'Confirmed', 'deceased': 'Deceased', 'recovered': 'Recovered', 'tested': 'Tested'})
+	df_district['Active'] = df_district['Confirmed'] - df_district['Recovered'] - df_district['Deceased']
+	try:
+		df_district = df_district.drop(['other'], axis=1)
+	except:
+		pass
+	df_district = df_district.fillna(0)
+	df_district = df_district.reset_index()
+
+
+def get_key(val, d):
+	for key, value in d.items():
+		if val == value:
+			return key
+
+	return -1
+
+
+@app.route('/update_districts', methods = ['POST'])
+def update_districts():
+	sname = request.form.get('state', 'Maharashtra', type=str)
+	scode = get_key(sname, state_names)
+
+	if(scode==-1):
+		object = {
+			'district_cols': [],
+			'district_rows': []
+		}
+		return jsonify(district=object)
+
+	prepare_district_data(scode)
+	district_cols = df_district.columns.values.tolist()
+	district_rows = df_district.values.tolist()
+
+	object = {
+		'district_cols': district_cols,
+		'district_rows': district_rows
+	}
+
+	return jsonify(district = object)
+
 
 
 @app.route('/')
@@ -444,6 +535,12 @@ def index():
 	df_nation = df_nation[dates]
 
 	df_state = df_state.sort_values(by='Confirmed', ascending=False)
+
+	prepare_district_data(df_state['Code'].values[0])
+
+	district_cols = df_district.columns.values.tolist()
+	district_rows = df_district.values.tolist()
+
 	state_labels = df_state['State'][0:10].values.tolist()
 	state_confirmed = df_state['Confirmed'][0:10].values.tolist()
 	state_deceased = df_state['Deceased'][0:10].values.tolist()
@@ -536,6 +633,14 @@ def index():
 						   x_ten = x_ten[-1], y_ten = y_ten[-1], x_seven = x_seven[-1], y_seven = y_seven[-1],
 						   x_twelve = x_twelve[-1], y_twelve = y_twelve[-1], mortality_rate = mortality_rate,
 
+						   state_confirmed_avg = np.mean(df_state['Confirmed']), state_deceased_avg = np.mean(df_state['Deceased']),
+						   state_active_avg=np.mean(df_state['Active']), state_recovered_avg = np.mean(df_state['Recovered']),
+						   state_tested_avg=np.mean(df_state['Tested']),
+
+						   district_cols = district_cols, district_rows = district_rows,
+						   districts = df_district['index'].values.tolist(), district_deceased_avg = np.mean(df_district['Deceased']),
+						   district_active_avg=np.mean(df_district['Active']), district_recovered_avg = np.mean(df_district['Recovered']),
+						   district_tested_avg=np.mean(df_district['Tested']), district_confirmed_avg = np.mean(df_district['Confirmed'])
 
 						   )
 

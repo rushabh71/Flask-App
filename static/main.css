@@ -160,7 +160,7 @@ th {
   margin-bottom: 5px;
 }
 
-#sselect {
+#sselect, #dselect {
   width: 200px;
   margin: 20px;
 } 

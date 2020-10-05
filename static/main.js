@@ -82,11 +82,59 @@ function registerListeners(){
 	});
 
 	$(function() {
+	 $('#dselect').on('change', function() {
+	 	var district = $('#dselect').val();
+	 	$.post("/district", {"district": district},
+		function(response){
+			plotDistrictChart(response.district);
+		});
+	  });
+	});
+
+
+	$(function() {
 	 $('#sselect').on('change', function() {
 	 	var state = $(this).val();
 	 	$.post("/state", {"state": state},
 		function(response){
 			 plotStateChart(response.state);
+		});
+		$.post("/update_districts", {"state": state},
+		function(response){
+			$("#dtable").DataTable().clear().destroy();
+			document.getElementById('dselect').innerHTML = '';
+
+			var rows = response.district.district_rows;
+			for(var row=0; row<rows.length; row++){
+				var row_element = document.createElement("tr");
+				for(var val=0; val<rows[row].length; val++){
+					if(val==0){
+						var val_element = document.createElement("td");
+						val_element.setAttribute('class', 'f-col-val');
+						val_element.innerHTML = '<b>'+rows[row][val]+'</b>';
+						row_element.appendChild(val_element);
+
+						var option = document.createElement("option");
+						option.innerHTML = rows[row][val];
+						document.getElementById('dselect').appendChild(option);
+					} else {
+						var val_element = document.createElement("td");
+						val_element.innerHTML = rows[row][val];
+						row_element.appendChild(val_element);
+					}
+				}
+				document.getElementById('dist_table_body').appendChild(row_element);
+
+				var district = $('#dselect').val();
+			 	$.post("/district", {"district": district},
+				function(response){
+					plotDistrictChart(response.district);
+				});
+			}
+
+			$('#dtable').DataTable({
+		        "order": [[ 1, "desc" ],[ 2, "desc" ]]
+		    }); 
 		});
 	  });
 	});
@@ -102,6 +150,10 @@ function registerListeners(){
     	$('#stable').DataTable({
 	        "order": [[ 2, "desc" ],[ 3, "desc" ]]
 	    });
+
+	    $('#dtable').DataTable({
+	        "order": [[ 1, "desc" ],[ 2, "desc" ]]
+	    });
 	});
 
 
@@ -114,6 +166,14 @@ function registerListeners(){
 		});
 	 });
 
+
+	$(function() {
+		var district = $('#dselect').val();
+	 	$.post("/district", {"district": district},
+		function(response){
+			plotDistrictChart(response.district);
+		});
+	 });
 
 
 	 $('#c_beginning').on('click', function() {

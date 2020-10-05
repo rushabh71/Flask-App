@@ -420,6 +420,60 @@
 		</div>
 	  </div>
 
+	   <div class="container-fluid">
+		<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+		  <div class="col-lg-6">
+				<div class="dtable">
+					<div class="table-responsive-md">
+					   <table class="table table-bordered table-striped" id="dtable">
+						  <thead class="thead-dark" id="dist_table_head">
+						    <tr>
+						    	{% for col in district_cols %}
+					       		 	{% if(col!=district_cols[0]) %}
+						    	   		<th scope="col" class="tcols">{{col}}</th>
+							        {% else %}
+								        <th scope="col" class="common-val">{{col}}</th>
+							        {% endif %}
+						        {% endfor %}
+						    </tr>
+						  </thead>
+						  <tbody id="dist_table_body">
+						  	{% for row in district_rows %}
+						    <tr>
+						        {% for val in row %}
+							        {% if(val==row[0]) %}
+								        <td class="f-col-val">
+								           <strong>{{val}}</strong>
+								        </td>
+							        {% else %}
+								        <td>
+								           {{val}}
+								        </td>
+							        {% endif %}
+						        {% endfor %}
+						    </tr>
+						    {% endfor %}
+						  </tbody>
+						</table>
+					</div>
+				</div>
+		  </div>
+		  <div class="col-lg-6">
+		  	<br>
+		  	<div class="card cchart">
+				<select class="form-control" id="dselect">
+			  		{% for dname in districts %}
+					  <option>{{ dname }}</option>
+					{% endfor %}
+				</select>
+
+				<div id="district_chart"></div>
+				
+			</div>
+		  </div>
+		</div>
+	  </div>
+
 	  
     </div>
 
@@ -528,7 +582,17 @@
 		var y_twelve = {{ y_twelve }}
 		var world_trend_x = {{ world_trend_x | safe }}
 		var mortality_rate = {{ mortality_rate | safe }}
+		var state_confirmed_avg = {{ state_confirmed_avg }}
+		var state_active_avg = {{ state_active_avg }}
+		var state_deceased_avg = {{ state_deceased_avg }}
+		var state_recovered_avg = {{ state_recovered_avg }}
+		var state_tested_avg = {{ state_tested_avg }}
 		var end_date = {{ end_date }}
+		var district_confirmed_avg = {{ district_confirmed_avg }}
+		var district_active_avg = {{ district_active_avg }}
+		var district_deceased_avg = {{ district_deceased_avg }}
+		var district_recovered_avg = {{ district_recovered_avg }}
+		var district_tested_avg = {{ district_tested_avg }}
 		var cat = 'Confirmed';
 	 	var type = 'Cumulative';
 	 	var c = 0; 		//Default date range is 'Beginning' for category chart	
